@@ -31,3 +31,24 @@ experienceRadios.forEach(radio => {
         }
     });
 });
+
+// Job card actions
+document.querySelectorAll('.btn-view').forEach(btn => {
+    btn.addEventListener('click', () => {
+        alert('Viewing job details');
+    });
+});
+
+document.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', () => {
+        alert('Editing job');
+    });
+});
+
+document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to delete this job?')) {
+            alert('Job deleted');
+        }
+    });
+});

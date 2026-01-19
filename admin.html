@@ -11,48 +11,15 @@
 <body>
     <header class="header">
         <section class="hero">
-            <h1>Find Your Dream Job Here</h1>
-            <div class="search-box">
-                <input type="text" placeholder="Job title or keyword">
-                <button>Search</button>
-            </div>
-        </section>
-        <section class="add-btn">
-            <button id="addJobBtn">Add New Job</button>
+            <h1>Job-Portal Admin-Dashboard</h1>
         </section>
     </header>
 
+    <section class="add-btn">
+        <button id="addJobBtn">Add New Job</button>
+    </section>
+
     <section class="main">
-        <!-- FILTER -->
-        <aside class="filter">
-            <h3>Filter</h3>
-            <input type="text" placeholder="Company, skill, tag">
-
-            <h4>Job Category</h4>
-            <select>
-                <option>All</option>
-                <option>IT & Software</option>
-                <option>Marketing</option>
-                <option>Finance</option>
-                <option>Design</option>
-            </select>
-
-            <h4>Experience Level</h4>
-            <label><input type="checkbox"> Intern</label>
-            <label><input type="checkbox"> Fresher (0–1 year)</label>
-            <label><input type="checkbox"> Experienced (2–5 years)</label>
-            <label><input type="checkbox"> Senior (5+ years)</label>
-
-            <h4>Employment Type</h4>
-            <label><input type="checkbox" checked> Full-time</label>
-            <label><input type="checkbox"> Part-time</label>
-            <label><input type="checkbox" checked> Remote</label>
-            <label><input type="checkbox"> Internship</label>
-
-            <h4>Other</h4>
-            <label><input type="checkbox"> Featured Job</label>
-            <label><input type="checkbox"> Urgent Hiring</label>
-        </aside>
 
         <!-- JOB LIST -->
         <div class="jobs">
@@ -63,7 +30,12 @@
                 <p><strong>Employment:</strong> Full-time, Remote</p>
                 <p><strong>Skills:</strong> HTML, CSS, JavaScript, React</p>
                 <p><strong>Expiry Date:</strong> 15 Feb 2026</p>
-                <span class="featured">Featured</span>
+                <span class="featured"></span>
+                <div class="actions">
+                    <button class="btn-view">View</button>
+                    <button class="btn-edit">Edit</button>
+                    <button class="btn-delete">Delete</button>
+                </div>
             </div>
 
             <div class="job-card">
@@ -73,11 +45,15 @@
                 <p><strong>Employment:</strong> Full-time, Remote</p>
                 <p><strong>Skills:</strong> HTML, CSS, JavaScript, React</p>
                 <p><strong>Expiry Date:</strong> 15 Feb 2026</p>
-                <span class="urgent">Urgent</span>
+                <span class="urgent"></span>
+                <span class="featured"></span>
+
+                <div class="actions">
+                    <button class="btn-view">View</button>
+                    <button class="btn-edit">Edit</button>
+                    <button class="btn-delete">Delete</button>
+                </div>
             </div>
-
-
-
         </div>
     </section>
 
