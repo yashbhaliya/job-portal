@@ -156,7 +156,15 @@ body {
 .job-card span:nth-of-type(2) {
     right: 45px;
 }
-
+/* Urgent */
+.job-card span.urgent {
+    
+    background-color: #dc3545;
+}
+.job-card span.urgent::before {
+    content: "⚡";
+    font-size: 15px;
+}
 /* Featured */
 .job-card span.featured {
     background: linear-gradient(45deg, #28a745, #3cd371);
@@ -166,15 +174,7 @@ body {
     font-size: 15px;
 }
 
-/* Urgent */
-.job-card span.urgent {
-    
-    background-color: #ffc6c6;
-}
-.job-card span.urgent::before {
-    content: "⚡";
-    font-size: 15px;
-}
+
 
 
 
@@ -194,16 +194,17 @@ body {
 }
 
 .btn-view {
-    background: #007bff;
-    color: white;
+    background-color: #5296df;
+      color: #ffffff;
 }
+
 
 .btn-view:hover {
     background: #0056b3;
 }
 
 .btn-edit {
-    background: #28a745;
+    background: #61c077;
     color: white;
 }
 
@@ -212,7 +213,7 @@ body {
 }
 
 .btn-delete {
-    background: #dc3545;
+    background: #db636f;
     color: white;
 }
 
