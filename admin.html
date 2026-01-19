@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="admin.css">
+    <title>job-portal</title>
+</head>
+
+<body>
+    <header class="header">
+        <section class="hero">
+            <h1>Find Your Dream Job Here</h1>
+            <div class="search-box">
+                <input type="text" placeholder="Job title or keyword">
+                <button>Search</button>
+            </div>
+        </section>
+        <section class="add-btn">
+            <button id="addJobBtn">Add New Job</button>
+        </section>
+    </header>
+
+    <section class="main">
+        <!-- FILTER -->
+        <aside class="filter">
+            <h3>Filter</h3>
+            <input type="text" placeholder="Company, skill, tag">
+
+            <h4>Employment</h4>
+            <label><input type="checkbox" checked> Fulltime</label>
+            <label><input type="checkbox" checked> Senior level</label>
+            <label><input type="checkbox" checked> Remote</label>
+            <label><input type="checkbox"> Contract</label>
+        </aside>
+
+        <!-- JOB LIST -->
+        <div class="jobs">
+            <div class="job-card">
+                <div>
+                    <h4>UX Researcher</h4>
+                    <p>Webflow</p>
+                    <div class="tags">
+                        <span>Fulltime</span>
+                        <span>Senior</span>
+                        <span>Remote</span>
+                    </div>
+                </div>
+                <div class="meta">
+                    <p>California, CA</p>
+                    <small>1 hour ago</small>
+                    <span class="status active">Active</span>
+                </div>
+            </div>
+
+            <div class="job-card">
+                <div>
+                    <h4>Quality Assurance</h4>
+                    <p>Notion</p>
+                    <div class="tags">
+                        <span>Fulltime</span>
+                        <span>Senior</span>
+                        <span>Remote</span>
+                    </div>
+                </div>
+                <div class="meta">
+                    <p>Idaho, ID</p>
+                    <small>2 hours ago</small>
+                    <span class="status active">Active</span>
+                </div>
+            </div>
+
+            <div class="job-card">
+                <div>
+                    <h4>Senior Developer</h4>
+                    <p>Zapier</p>
+                    <div class="tags">
+                        <span>Fulltime</span>
+                        <span>Senior</span>
+                        <span>Remote</span>
+                    </div>
+                </div>
+                <div class="meta">
+                    <p>Oklahoma, OK</p>
+                    <small>7 hours ago</small>
+                    <span class="status active">Active</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="job-modal" id="jobModal">
+        <div class="job-modal-content">
+            <h2>Post New Job</h2>
+
+            <form class="job-form">
+
+                <div class="form-group">
+                    <label>Job Title</label>
+                    <input type="text" placeholder="Enter job title">
+                </div>
+
+                <div class="form-group">
+                    <label>Job Category</label>
+                    <select>
+                        <option>Select---</option>
+                        <option>IT & Software</option>
+                        <option>Marketing</option>
+                        <option>Finance</option>
+                        <option>Design</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Min Salary</label>
+                        <input type="number" placeholder="₹ Min">
+                    </div>
+                    <div class="form-group">
+                        <label>Max Salary</label>
+                        <input type="number" placeholder="₹ Max">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Experience Level</label>
+                    <div class="experience-options">
+                        <label><input type="radio" name="experience" value="intern"> Intern</label>
+                        <label><input type="radio" name="experience" value="experienced"> Experienced</label>
+                    </div>
+                    <input type="number" id="experienceYears" placeholder="Enter years of experience">
+                </div>
+
+                <div class="form-group">
+                    <label>Employment Type</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox"> Full-time</label>
+                        <label><input type="checkbox"> Part-time</label>
+                        <label><input type="checkbox"> Remote</label>
+                        <label><input type="checkbox"> Internship</label>
+                    </div>
+                </div>
+
+                <div class="form-group skill-inline">
+                    <label>Skills Required</label>
+                    <div class="skill-row">
+                        <input type="text" placeholder="HTML, CSS, JavaScript">
+                        <button class="skill-btn">Add Skills</button>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label>Job Expiry Date</label>
+                    <input type="date">
+                </div>
+
+
+                <div class="form-row">
+                    <label><input type="checkbox"> Featured Job</label>
+                    <label><input type="checkbox"> Urgent Hiring</label>
+                </div>
+
+                <div class="form-row">
+                    <button type="submit" class="btn-primary">Post Job</button>
+                    <button type="button" class="btn-secondary" onclick="closeJobModal()">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+
+<script src="admin.js"></script>
+
+</html>
