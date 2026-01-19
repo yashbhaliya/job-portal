@@ -28,70 +28,62 @@
             <h3>Filter</h3>
             <input type="text" placeholder="Company, skill, tag">
 
-            <h4>Employment</h4>
-            <label><input type="checkbox" checked> Fulltime</label>
-            <label><input type="checkbox" checked> Senior level</label>
+            <h4>Job Category</h4>
+            <select>
+                <option>All</option>
+                <option>IT & Software</option>
+                <option>Marketing</option>
+                <option>Finance</option>
+                <option>Design</option>
+            </select>
+
+            <h4>Experience Level</h4>
+            <label><input type="checkbox"> Intern</label>
+            <label><input type="checkbox"> Fresher (0–1 year)</label>
+            <label><input type="checkbox"> Experienced (2–5 years)</label>
+            <label><input type="checkbox"> Senior (5+ years)</label>
+
+            <h4>Employment Type</h4>
+            <label><input type="checkbox" checked> Full-time</label>
+            <label><input type="checkbox"> Part-time</label>
             <label><input type="checkbox" checked> Remote</label>
-            <label><input type="checkbox"> Contract</label>
+            <label><input type="checkbox"> Internship</label>
+
+            <h4>Other</h4>
+            <label><input type="checkbox"> Featured Job</label>
+            <label><input type="checkbox"> Urgent Hiring</label>
         </aside>
 
         <!-- JOB LIST -->
         <div class="jobs">
             <div class="job-card">
-                <div>
-                    <h4>UX Researcher</h4>
-                    <p>Webflow</p>
-                    <div class="tags">
-                        <span>Fulltime</span>
-                        <span>Senior</span>
-                        <span>Remote</span>
-                    </div>
-                </div>
-                <div class="meta">
-                    <p>California, CA</p>
-                    <small>1 hour ago</small>
-                    <span class="status active">Active</span>
-                </div>
+                <h3>IT & Software</h3>
+                <p><strong>Salary:</strong> ₹30,000 – ₹60,000</p>
+                <p><strong>Experience:</strong> 2 Years (Experienced)</p>
+                <p><strong>Employment:</strong> Full-time, Remote</p>
+                <p><strong>Skills:</strong> HTML, CSS, JavaScript, React</p>
+                <p><strong>Expiry Date:</strong> 15 Feb 2026</p>
+                <span class="featured">Featured</span>
             </div>
 
             <div class="job-card">
-                <div>
-                    <h4>Quality Assurance</h4>
-                    <p>Notion</p>
-                    <div class="tags">
-                        <span>Fulltime</span>
-                        <span>Senior</span>
-                        <span>Remote</span>
-                    </div>
-                </div>
-                <div class="meta">
-                    <p>Idaho, ID</p>
-                    <small>2 hours ago</small>
-                    <span class="status active">Active</span>
-                </div>
+                <h3>IT & Software</h3>
+                <p><strong>Salary:</strong> ₹30,000 – ₹60,000</p>
+                <p><strong>Experience:</strong> 2 Years (Experienced)</p>
+                <p><strong>Employment:</strong> Full-time, Remote</p>
+                <p><strong>Skills:</strong> HTML, CSS, JavaScript, React</p>
+                <p><strong>Expiry Date:</strong> 15 Feb 2026</p>
+                <span class="urgent">Urgent</span>
             </div>
 
-            <div class="job-card">
-                <div>
-                    <h4>Senior Developer</h4>
-                    <p>Zapier</p>
-                    <div class="tags">
-                        <span>Fulltime</span>
-                        <span>Senior</span>
-                        <span>Remote</span>
-                    </div>
-                </div>
-                <div class="meta">
-                    <p>Oklahoma, OK</p>
-                    <small>7 hours ago</small>
-                    <span class="status active">Active</span>
-                </div>
-            </div>
+
+
         </div>
     </section>
 
     <div class="job-modal" id="jobModal">
         <div class="job-modal-content">
+            <span class="close-icon" onclick="closeJobModal()">&times;</span>
             <h2>Post New Job</h2>
 
             <form class="job-form">

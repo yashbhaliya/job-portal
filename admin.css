@@ -84,86 +84,173 @@ body {
 }
 
 /* ================= MAIN ================= */
+/* ============================= */
+/* MAIN SECTION LAYOUT           */
+/* ============================= */
 .main {
     display: flex;
     gap: 30px;
-    padding: 50px 60px;
+    padding: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f7fa;
 }
 
-/* FILTER */
+/* ============================= */
+/* FILTER SIDEBAR (VERTICAL)     */
+/* ============================= */
 .filter {
-    width: 260px;
+    flex: 0 0 250px;               /* fixed width */
     background: #ffffff;
-    padding: 25px;
-    border-radius: 14px;
+    border-radius: 15px;
+    padding: 25px 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    position: sticky;              /* stays visible on scroll */
+    top: 20px;
+    margin-top:10px;            
+
+    height: fit-content;
 }
 
 .filter h3 {
-    margin-bottom: 15px;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 2px solid #007bff33;
+    padding-bottom: 5px;
 }
 
 .filter h4 {
-    margin: 20px 0 10px;
-    font-size: 15px;
+    font-size: 16px;
+    margin: 15px 0 8px 0;
+    color: #555;
 }
 
-.filter input[type="text"] {
+.filter input[type="text"],
+.filter select {
     width: 100%;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 10px 12px;
     border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s;
+}
+
+.filter input[type="text"]:focus,
+.filter select:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 .filter label {
     display: block;
-    margin-bottom: 10px;
     font-size: 14px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.filter input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #007bff;
+}
+
+/* ============================= */
+/* JOB LIST (HORIZONTAL SCROLL)  */
+/* ============================= */
+.jobs {
+    flex: 1;                       /* fill remaining space */
+    display: flex;
+    flex-wrap: nowrap;             /* keep in one row */
+    gap: 20px;
+    overflow-x: auto;              /* scrollable horizontally */
+    padding-bottom: 10px;
+}
+
+/* Horizontal scrollbar styling */
+.jobs::-webkit-scrollbar {
+    height: 6px;
+}
+.jobs::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+.jobs::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ============================= */
+/* JOB CARD DESIGN               */
+/* ============================= */
+.job-card {
+    position: relative;
+    /* background: linear-gradient(145deg, #ffffff, #f0f4ff); */
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px 25px 30px 25px;
+    width: 320px;
+    height: 200px;
+    flex: 0 0 auto;  
+    margin-top:10px;            
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
 }
 
-/* JOB LIST */
-.jobs {
-    flex: 1;
-}
-
-.job-card {
-    background: #ffffff;
-    padding: 22px;
-    border-radius: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
-    transition: 0.3s;
-}
-
 .job-card:hover {
-    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
-    transform: translateY(-2px);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
 }
 
-.job-card h4 {
-    font-size: 18px;
-    margin-bottom: 6px;
+/* Job Title */
+.job-card h3 {
+    margin-bottom: 12px;
+    color: #007bff;
+    font-size: 20px;
+    font-weight: 600;
 }
 
+/* Job Details */
 .job-card p {
+    margin: 6px 0;
     font-size: 14px;
-    color: #777;
+    color: #555;
+    line-height: 1.5;
 }
 
-/* TAGS */
-.tags {
-    margin-top: 8px;
-}
-
-.tags span {
-    background: #f1f3f6;
-    padding: 6px 12px;
-    border-radius: 20px;
+/* BADGES (Featured / Urgent) */
+.job-card span {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: 12px;
-    margin-right: 6px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 50px;
+    color: #fff;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
+
+/* Featured Badge */
+.job-card span.featured {
+    background: linear-gradient(45deg, #28a745, #3cd371);
+}
+.job-card span.featured::before {
+    content: "★";
+    font-size: 14px;
+}
+
+/* Urgent Badge */
+.job-card span.urgent {
+    background: linear-gradient(45deg, #dc3545, #ff4d4d);
+}
+.job-card span.urgent::before {
+    content: "⚡";
+    font-size: 14px;
+}
+
 
 /* META */
 .meta {
@@ -221,6 +308,21 @@ body {
     padding: 28px;
     border-radius: 16px;
     box-shadow: none;
+    position: relative;
+}
+
+.close-icon {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #777;
+    transition: color 0.3s;
+}
+
+.close-icon:hover {
+    color: #000;
 }
 
 .job-modal-content h2 {
