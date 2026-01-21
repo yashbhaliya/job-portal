@@ -127,14 +127,23 @@ document.querySelector('.jobs').addEventListener('click', async function (e) {
 // Helper Functions
 function openJobModal() {
     const modalTitle = document.querySelector('.job-modal-content h2');
+    const skillBtn = document.querySelector('.skill-btn');
     if (isViewMode) {
         modalTitle.textContent = 'View Job';
-        jobForm.querySelectorAll('input, select').forEach(el => el.disabled = true);
+        // Make text/number/date inputs readonly
+        jobForm.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => el.readOnly = true);
+        // Disable radios, checkboxes, selects
+        jobForm.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(el => el.disabled = true);
         document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'none');
+        skillBtn.disabled = true;
     } else {
         modalTitle.textContent = editingJobId ? 'Edit Job' : 'Post New Job';
-        jobForm.querySelectorAll('input, select').forEach(el => el.disabled = false);
+        // Remove readonly from text inputs
+        jobForm.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => el.readOnly = false);
+        // Enable radios, checkboxes, selects
+        jobForm.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(el => el.disabled = false);
         document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
+        skillBtn.disabled = false;
     }
     jobModal.style.display = 'flex';
 }
@@ -145,7 +154,12 @@ function closeJobModal() {
     isViewMode = false;
     jobForm.reset();
     currentSkills = [];
-    renderSkillsList();
+    renderSkillsList(false);
+    // Re-enable elements
+    jobForm.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => el.readOnly = false);
+    jobForm.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(el => el.disabled = false);
+    document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
+    document.querySelector('.skill-btn').disabled = false;
 }
 
 function populateForm(job) {
@@ -182,10 +196,35 @@ function renderSkillsList(readonly = false) {
     });
 }
 
+function addSkill() {
+    const skillInput = document.getElementById('skillInput');
+    const skill = skillInput.value.trim();
+    if (skill && !currentSkills.includes(skill)) {
+        currentSkills.push(skill);
+        skillInput.value = '';
+        renderSkillsList();
+    }
+}
+
 function removeSkill(index) {
     currentSkills.splice(index, 1);
     renderSkillsList();
 }
+
+// Allow adding skill with Enter key
+document.getElementById('skillInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addSkill();
+    }
+});
+
+// Experience level functionality
+jobForm.querySelectorAll('input[name="experience"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        experienceYearsInput.style.display = this.value === 'experienced' ? 'block' : 'none';
+    });
+});
 
 addJobBtn.addEventListener('click', () => {
     editingJobId = null;
