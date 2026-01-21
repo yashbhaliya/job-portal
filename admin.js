@@ -44,16 +44,23 @@ function renderJobs() {
 // Function to open the job modal
 function openJobModal() {
     const modalTitle = document.querySelector('.job-modal-content h2');
+    const skillBtn = document.querySelector('.skill-btn');
     if (isViewMode) {
-        modalTitle.textContent = 'View Job';
-        const formElements = jobForm.querySelectorAll('input, select');
-        formElements.forEach(el => el.disabled = true);
+        modalTitle.textContent =('View Job') ;
+        // Make text/number/date inputs readonly
+        jobForm.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => el.readOnly = true);
+        // Disable radios, checkboxes, selects
+        jobForm.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(el => el.disabled = true);
         document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'none');
+        skillBtn.disabled = true;
     } else {
         modalTitle.textContent = editingJobId ? 'Edit Job' : 'Post New Job';
-        const formElements = jobForm.querySelectorAll('input, select');
-        formElements.forEach(el => el.disabled = false);
+        // Remove readonly from text inputs
+        jobForm.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => el.readOnly = false);
+        // Enable radios, checkboxes, selects
+        jobForm.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(el => el.disabled = false);
         document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
+        skillBtn.disabled = false;
     }
     jobModal.style.display = 'flex';
 }
@@ -67,11 +74,12 @@ function closeJobModal() {
     experienceYearsInput.style.display = 'none';
     document.querySelector('.job-modal-content h2').textContent = 'Post New Job';
     currentSkills = [];
-    renderSkillsList();
+    renderSkillsList(false);
     // Re-enable elements
-    const formElements = jobForm.querySelectorAll('input, select');
-    formElements.forEach(el => el.disabled = false);
+    jobForm.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => el.readOnly = false);
+    jobForm.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(el => el.disabled = false);
     document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
+    document.querySelector('.skill-btn').disabled = false;
 }
 
 // Function to add skill
@@ -80,18 +88,22 @@ function addSkill() {
     if (skill && !currentSkills.includes(skill)) {
         currentSkills.push(skill);
         document.getElementById('skillInput').value = '';
-        renderSkillsList();
+        renderSkillsList(false);
     }
 }
 
 // Function to render skills list
-function renderSkillsList() {
+function renderSkillsList(readonly = false) {
     const list = document.getElementById('skillsList');
     list.innerHTML = '';
     currentSkills.forEach((skill, index) => {
         const skillTag = document.createElement('span');
         skillTag.className = 'skill-tag';
-        skillTag.innerHTML = `${skill} <button onclick="removeSkill(${index})">×</button>`;
+        if (readonly) {
+            skillTag.innerHTML = skill;
+        } else {
+            skillTag.innerHTML = `${skill} <button onclick="removeSkill(${index})">×</button>`;
+        }
         list.appendChild(skillTag);
     });
 }
@@ -99,7 +111,7 @@ function renderSkillsList() {
 // Function to remove skill
 function removeSkill(index) {
     currentSkills.splice(index, 1);
-    renderSkillsList();
+    renderSkillsList(false);
 }
 
 // Allow adding skill with Enter key
@@ -125,7 +137,7 @@ function populateForm(job) {
         cb.checked = job.employmentTypes.includes(cb.value);
     });
     currentSkills = [...job.skills];
-    renderSkillsList();
+    renderSkillsList(isViewMode);
     document.querySelector('input[name="expiryDate"]').value = job.expiryDate;
     document.querySelector('input[name="featured"]').checked = job.featured;
     document.querySelector('input[name="urgent"]').checked = job.urgent;
@@ -157,6 +169,7 @@ experienceRadios.forEach(radio => {
 // Form submission handler
 jobForm.addEventListener('submit', function(e) {
     e.preventDefault();
+    if (isViewMode) return; // Prevent submission in view mode
     const formData = new FormData(jobForm);
     let minSalary = formData.get('minSalary');
     let maxSalary = formData.get('maxSalary');
