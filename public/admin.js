@@ -1,0 +1,197 @@
+// admin.js
+let jobs = [];
+let editingJobId = null;
+let currentSkills = [];
+let isViewMode = false;
+
+const addJobBtn = document.getElementById('addJobBtn');
+const jobModal = document.getElementById('jobModal');
+const jobForm = document.querySelector('.job-form');
+const experienceYearsInput = document.getElementById('experienceYears');
+
+// 1. Fetch from MongoDB
+async function fetchJobs() {
+    try {
+        const res = await fetch('http://localhost:5000/jobs');
+        jobs = await res.json();
+        renderJobs();
+    } catch (err) {
+        console.error('Error fetching jobs:', err);
+    }
+}
+
+// 2. Render using MongoDB _id
+function renderJobs() {
+    const jobsContainer = document.querySelector('.jobs');
+    jobsContainer.innerHTML = '';
+    jobs.forEach(job => {
+        const jobCard = document.createElement('div');
+        jobCard.className = 'job-card';
+        jobCard.innerHTML = `
+            <h3>${job.title}</h3>
+            <p>Category: ${job.category}</p>
+            <p>Salary: ${job.minSalary === 'No salary needed' ? 'No salary needed' : `₹${job.minSalary} - ₹${job.maxSalary}`}</p>
+            <p>Experience: ${job.experience}${job.years ? ` (${job.years} years)` : ''}</p>
+            <p>Type: ${job.employmentTypes ? job.employmentTypes.join('<br>') : ''}</p>
+            <p>Skills: ${job.skills ? job.skills.join(', ') : ''}</p>
+            <p>Expiry: ${job.expiryDate}</p>
+            ${job.featured ? '<span class="featured">★ </span>' : ''}
+            ${job.urgent ? '<span class="urgent">⚡ </span>' : ''}
+            <div class="actions">
+                <button class="btn-view" data-id="${job._id}">👁️</button>
+                <button class="btn-edit" data-id="${job._id}">✏️</button>
+                <button class="btn-delete" data-id="${job._id}">🗑️</button>
+            </div>
+        `;
+        jobsContainer.appendChild(jobCard);
+    });
+}
+
+// 3. Unified Form Submission (Post & Put)
+jobForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (isViewMode) return;
+
+    const formData = new FormData(jobForm);
+    const title = formData.get('title');
+
+    if (!title || title.trim() === "") {
+        alert("Please enter a job title.");
+        return;
+    }
+
+    const jobData = {
+        title: title,
+        category: formData.get('category'),
+        minSalary: formData.get('minSalary') || 'No salary needed',
+        maxSalary: formData.get('maxSalary') || 'No salary needed',
+        experience: formData.get('experience'),
+        years: formData.get('years'),
+        employmentTypes: formData.getAll('employmentType'),
+        skills: [...currentSkills],
+        expiryDate: formData.get('expiryDate'),
+        featured: formData.has('featured'),
+        urgent: formData.has('urgent')
+    };
+
+    try {
+        let url = 'http://localhost:5000/jobs';
+        let method = 'POST';
+
+        if (editingJobId) {
+            url = `http://localhost:5000/jobs/${editingJobId}`;
+            method = 'PUT';
+        }
+
+        const res = await fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(jobData)
+        });
+
+        if (res.ok) {
+            await fetchJobs();
+            closeJobModal();
+        }
+    } catch (err) {
+        console.error('Error saving job:', err);
+    }
+});
+
+// 4. Unified Event Delegation
+document.querySelector('.jobs').addEventListener('click', async function (e) {
+    const target = e.target.closest('button');
+    if (!target) return;
+
+    const jobId = target.dataset.id;
+    const job = jobs.find(j => j._id === jobId);
+
+    if (target.classList.contains('btn-view')) {
+        isViewMode = true;
+        editingJobId = null;
+        populateForm(job);
+        openJobModal();
+    } else if (target.classList.contains('btn-edit')) {
+        isViewMode = false;
+        editingJobId = jobId;
+        populateForm(job);
+        openJobModal();
+    } else if (target.classList.contains('btn-delete')) {
+        if (confirm('Are you sure you want to delete this job?')) {
+            await fetch(`http://localhost:5000/jobs/${jobId}`, { method: 'DELETE' });
+            fetchJobs();
+        }
+    }
+});
+
+// Helper Functions
+function openJobModal() {
+    const modalTitle = document.querySelector('.job-modal-content h2');
+    if (isViewMode) {
+        modalTitle.textContent = 'View Job';
+        jobForm.querySelectorAll('input, select').forEach(el => el.disabled = true);
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'none');
+    } else {
+        modalTitle.textContent = editingJobId ? 'Edit Job' : 'Post New Job';
+        jobForm.querySelectorAll('input, select').forEach(el => el.disabled = false);
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
+    }
+    jobModal.style.display = 'flex';
+}
+
+function closeJobModal() {
+    jobModal.style.display = 'none';
+    editingJobId = null;
+    isViewMode = false;
+    jobForm.reset();
+    currentSkills = [];
+    renderSkillsList();
+}
+
+function populateForm(job) {
+    jobForm.querySelector('input[name="title"]').value = job.title;
+    jobForm.querySelector('select[name="category"]').value = job.category;
+    jobForm.querySelector('input[name="minSalary"]').value = job.minSalary === 'No salary needed' ? '' : job.minSalary;
+    jobForm.querySelector('input[name="maxSalary"]').value = job.maxSalary === 'No salary needed' ? '' : job.maxSalary;
+    
+    const expRadio = jobForm.querySelector(`input[name="experience"][value="${job.experience}"]`);
+    if(expRadio) expRadio.checked = true;
+    
+    jobForm.querySelector('input[name="years"]').value = job.years || '';
+    experienceYearsInput.style.display = job.experience === 'experienced' ? 'block' : 'none';
+
+    jobForm.querySelectorAll('input[name="employmentType"]').forEach(cb => {
+        cb.checked = job.employmentTypes.includes(cb.value);
+    });
+
+    currentSkills = [...job.skills];
+    renderSkillsList(isViewMode);
+    jobForm.querySelector('input[name="expiryDate"]').value = job.expiryDate;
+    jobForm.querySelector('input[name="featured"]').checked = job.featured;
+    jobForm.querySelector('input[name="urgent"]').checked = job.urgent;
+}
+
+function renderSkillsList(readonly = false) {
+    const list = document.getElementById('skillsList');
+    list.innerHTML = '';
+    currentSkills.forEach((skill, index) => {
+        const skillTag = document.createElement('span');
+        skillTag.className = 'skill-tag';
+        skillTag.innerHTML = readonly ? skill : `${skill} <button type="button" onclick="removeSkill(${index})">×</button>`;
+        list.appendChild(skillTag);
+    });
+}
+
+function removeSkill(index) {
+    currentSkills.splice(index, 1);
+    renderSkillsList();
+}
+
+addJobBtn.addEventListener('click', () => {
+    editingJobId = null;
+    isViewMode = false;
+    openJobModal();
+});
+
+// Initial load
+fetchJobs();
