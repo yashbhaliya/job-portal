@@ -38,8 +38,19 @@
 
                 <div class="form-row">
                     <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" name="companyName" placeholder="Enter company name" required>
+                    </div>
+                    <div class="form-group">
                         <label>Job Title</label>
                         <input type="text" name="title" placeholder="Enter job title" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Job Location</label>
+                        <input type="text" name="location" placeholder="Enter job location" required>
                     </div>
                     <div class="form-group">
                         <label>Job Category</label>
@@ -50,6 +61,18 @@
                             <option>Finance</option>
                             <option>Design</option>
                         </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Company Logo</label>
+                    <div class="file-upload-container">
+                        <input type="file" id="companyLogoFile" name="companyLogoFile" accept="image/*" class="file-input">
+                        <label for="companyLogoFile" class="file-upload-btn">
+                            <span class="upload-icon">📁</span>
+                            <span class="upload-text">Choose Logo</span>
+                        </label>
+                        <div class="file-preview" id="logoPreview"></div>
                     </div>
                 </div>
 

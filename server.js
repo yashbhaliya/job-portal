@@ -26,13 +26,15 @@ app.get('/jobs', async (req, res) => {
 
 app.post('/jobs', async (req, res) => {
     try {
-        console.log('Incoming job:', req.body); // debug
+        const { title, category, companyName, location } = req.body;
+        if (!title || !category || !companyName || !location) {
+            return res.status(400).json({ error: 'Title, category, company name, and location are required' });
+        }
+        
         const job = new Job(req.body);
         await job.save();
-        console.log('Job saved successfully!');
         res.json({ message: 'Job saved successfully!', job });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: err.message });
     }
 });
@@ -40,7 +42,24 @@ app.post('/jobs', async (req, res) => {
 // UPDATE a job
 app.put('/jobs/:id', async (req, res) => {
     try {
-        const updatedJob = await Job.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const { title, category, companyName, location } = req.body;
+        if (!title || !category || !companyName || !location) {
+            return res.status(400).json({ error: 'Title, category, company name, and location are required' });
+        }
+        
+        const allowedFields = ['title', 'category', 'companyName', 'location', 'companyLogo', 'minSalary', 'maxSalary', 'experience', 'years', 'employmentTypes', 'skills', 'expiryDate', 'featured', 'urgent'];
+        const updateData = {};
+        
+        allowedFields.forEach(field => {
+            if (req.body[field] !== undefined) {
+                updateData[field] = req.body[field];
+            }
+        });
+        
+        const updatedJob = await Job.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        if (!updatedJob) {
+            return res.status(404).json({ message: 'Job not found' });
+        }
         res.json(updatedJob);
     } catch (err) {
         res.status(500).json({ error: err.message });

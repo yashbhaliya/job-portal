@@ -1,8 +1,11 @@
 const mongoose = require('../db'); // important to import the connection
 
 const jobSchema = new mongoose.Schema({
-    title: { type: String, required: true }, // Won't save if title is missing
+    title: { type: String, required: true },
     category: { type: String, required: true },
+    companyName: { type: String, required: true },
+    location: { type: String, required: true },
+    companyLogo: String,
     minSalary: String,
     maxSalary: String,
     experience: { type: String, default: 'freshman' },

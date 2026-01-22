@@ -29,12 +29,10 @@ function renderJobs() {
         jobCard.className = 'job-card';
         jobCard.innerHTML = `
             <h3>${job.title}</h3>
-            <p>Category: ${job.category}</p>
-            <p>Salary: ${job.minSalary === 'No salary needed' ? 'No salary needed' : `₹${job.minSalary} - ₹${job.maxSalary}`}</p>
-            <p>Experience: ${job.experience}${job.years ? ` (${job.years} years)` : ''}</p>
-            <p>Type: ${job.employmentTypes ? job.employmentTypes.join('<br>') : ''}</p>
-            <p>Skills: ${job.skills ? job.skills.join(', ') : ''}</p>
-            <p>Expiry: ${job.expiryDate}</p>
+            <p class="company-name">${job.companyName || 'N/A'}</p>
+            <p><strong>Location:</strong> ${job.location || 'N/A'}</p>
+            <p><strong>Skills:</strong> ${job.skills ? job.skills.join(', ') : ''}</p>
+            <p><strong>Expiry:</strong> ${job.expiryDate}</p>
             ${job.featured ? '<span class="featured">⭐  </span>' : ''}
             ${job.urgent ? '<span class="urgent"> ⚡</span>' : ''}
             <div class="actions">
@@ -63,6 +61,9 @@ jobForm.addEventListener('submit', async function (e) {
     const jobData = {
         title: title,
         category: formData.get('category'),
+        companyName: formData.get('companyName'),
+        location: formData.get('location'),
+        companyLogo: formData.get('companyLogo'),
         minSalary: formData.get('minSalary') || 'No salary needed',
         maxSalary: formData.get('maxSalary') || 'No salary needed',
         experience: formData.get('experience'),
@@ -129,6 +130,8 @@ function openJobModal() {
     const modalTitle = document.querySelector('.job-modal-content h2');
     const submitBtn = document.querySelector('.btn-primary');
     const skillBtn = document.querySelector('.skill-btn');
+    const fileUploadBtn = document.querySelector('.file-upload-btn');
+    
     if (isViewMode) {
         modalTitle.textContent = 'View Job';
         // Make ALL inputs readonly/disabled
@@ -138,6 +141,7 @@ function openJobModal() {
         });
         document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'none');
         skillBtn.style.display = 'none';
+        fileUploadBtn.style.display = 'none';
     } else {
         modalTitle.textContent = editingJobId ? 'Update Job' : 'Post New Job';
         submitBtn.textContent = editingJobId ? 'Update Job' : 'Post Job';
@@ -148,6 +152,7 @@ function openJobModal() {
         });
         document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
         skillBtn.style.display = 'inline-block';
+        fileUploadBtn.style.display = 'flex';
     }
     jobModal.style.display = 'flex';
 }
@@ -159,6 +164,12 @@ function closeJobModal() {
     jobForm.reset();
     currentSkills = [];
     renderSkillsList(false);
+    
+    // Clear logo preview
+    const preview = document.getElementById('logoPreview');
+    preview.classList.remove('active');
+    preview.innerHTML = '';
+    
     // Re-enable all elements
     jobForm.querySelectorAll('input, select').forEach(el => {
         el.readOnly = false;
@@ -166,11 +177,27 @@ function closeJobModal() {
     });
     document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
     document.querySelector('.skill-btn').style.display = 'inline-block';
+    document.querySelector('.file-upload-btn').style.display = 'flex';
 }
 
 function populateForm(job) {
     jobForm.querySelector('input[name="title"]').value = job.title;
     jobForm.querySelector('select[name="category"]').value = job.category;
+    jobForm.querySelector('input[name="companyName"]').value = job.companyName || '';
+    jobForm.querySelector('input[name="location"]').value = job.location || '';
+    
+    // Handle company logo
+    if (job.companyLogo) {
+        const preview = document.getElementById('logoPreview');
+        preview.innerHTML = `
+            <img src="${job.companyLogo}" alt="Company Logo" class="preview-image">
+            <div class="preview-info">
+                <div class="preview-name">Current Logo</div>
+            </div>
+        `;
+        preview.classList.add('active');
+    }
+    
     jobForm.querySelector('input[name="minSalary"]').value = job.minSalary === 'No salary needed' ? '' : job.minSalary;
     jobForm.querySelector('input[name="maxSalary"]').value = job.maxSalary === 'No salary needed' ? '' : job.maxSalary;
     
@@ -237,6 +264,34 @@ addJobBtn.addEventListener('click', () => {
     isViewMode = false;
     openJobModal();
 });
+
+// File upload handling
+document.getElementById('companyLogoFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById('logoPreview');
+    
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `
+                <img src="${e.target.result}" alt="Logo Preview" class="preview-image">
+                <div class="preview-info">
+                    <div class="preview-name">${file.name}</div>
+                    <div class="preview-size">${(file.size / 1024).toFixed(1)} KB</div>
+                </div>
+                <button type="button" class="remove-file" onclick="removeLogoFile()">Remove</button>
+            `;
+            preview.classList.add('active');
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+function removeLogoFile() {
+    document.getElementById('companyLogoFile').value = '';
+    document.getElementById('logoPreview').classList.remove('active');
+    document.getElementById('logoPreview').innerHTML = '';
+}
 
 // Initial load
 fetchJobs();
