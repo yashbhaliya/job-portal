@@ -35,12 +35,12 @@ function renderJobs() {
             <p>Type: ${job.employmentTypes ? job.employmentTypes.join('<br>') : ''}</p>
             <p>Skills: ${job.skills ? job.skills.join(', ') : ''}</p>
             <p>Expiry: ${job.expiryDate}</p>
-            ${job.featured ? '<span class="featured">★ </span>' : ''}
-            ${job.urgent ? '<span class="urgent">⚡ </span>' : ''}
+            ${job.featured ? '<span class="featured">⭐  </span>' : ''}
+            ${job.urgent ? '<span class="urgent"> ⚡</span>' : ''}
             <div class="actions">
-                <button class="btn-view" data-id="${job._id}">👁️</button>
-                <button class="btn-edit" data-id="${job._id}">✏️</button>
-                <button class="btn-delete" data-id="${job._id}">🗑️</button>
+                <button class="btn-view" data-id="${job._id}">View</button>
+                <button class="btn-edit" data-id="${job._id}">Edit</button>
+                <button class="btn-delete" data-id="${job._id}">Delete</button>
             </div>
         `;
         jobsContainer.appendChild(jobCard);
@@ -127,23 +127,27 @@ document.querySelector('.jobs').addEventListener('click', async function (e) {
 // Helper Functions
 function openJobModal() {
     const modalTitle = document.querySelector('.job-modal-content h2');
+    const submitBtn = document.querySelector('.btn-primary');
     const skillBtn = document.querySelector('.skill-btn');
     if (isViewMode) {
         modalTitle.textContent = 'View Job';
-        // Make text/number/date inputs readonly
-        jobForm.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => el.readOnly = true);
-        // Disable radios, checkboxes, selects
-        jobForm.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(el => el.disabled = true);
+        // Make ALL inputs readonly/disabled
+        jobForm.querySelectorAll('input, select').forEach(el => {
+            el.readOnly = true;
+            el.disabled = true;
+        });
         document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'none');
-        skillBtn.disabled = true;
+        skillBtn.style.display = 'none';
     } else {
-        modalTitle.textContent = editingJobId ? 'Edit Job' : 'Post New Job';
-        // Remove readonly from text inputs
-        jobForm.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => el.readOnly = false);
-        // Enable radios, checkboxes, selects
-        jobForm.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(el => el.disabled = false);
+        modalTitle.textContent = editingJobId ? 'Update Job' : 'Post New Job';
+        submitBtn.textContent = editingJobId ? 'Update Job' : 'Post Job';
+        // Enable all inputs
+        jobForm.querySelectorAll('input, select').forEach(el => {
+            el.readOnly = false;
+            el.disabled = false;
+        });
         document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
-        skillBtn.disabled = false;
+        skillBtn.style.display = 'inline-block';
     }
     jobModal.style.display = 'flex';
 }
@@ -155,11 +159,13 @@ function closeJobModal() {
     jobForm.reset();
     currentSkills = [];
     renderSkillsList(false);
-    // Re-enable elements
-    jobForm.querySelectorAll('input[type="text"], input[type="number"], input[type="date"]').forEach(el => el.readOnly = false);
-    jobForm.querySelectorAll('input[type="radio"], input[type="checkbox"], select').forEach(el => el.disabled = false);
+    // Re-enable all elements
+    jobForm.querySelectorAll('input, select').forEach(el => {
+        el.readOnly = false;
+        el.disabled = false;
+    });
     document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
-    document.querySelector('.skill-btn').disabled = false;
+    document.querySelector('.skill-btn').style.display = 'inline-block';
 }
 
 function populateForm(job) {

@@ -123,7 +123,7 @@ body {
     position: absolute;
     top: 12px;
     padding: 5px 10px;
-    font-size: 11px;
+    font-size: 20px;
     font-weight: 600;
     border-radius: 20px;
     color: #fff;
@@ -131,21 +131,18 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    /* box-shadow: 0 3px 8px rgba(0,0,0,0.2); */
 }
 
 
 /* First badge (Urgent) → right most */
 .job-card span:nth-of-type(1) {
     right: 12px;
-    background: linear-gradient(135deg, #15803d, #22c55e);
+    
 }
 
 /* Second badge (Featured) → left of urgent */
 .job-card span:nth-of-type(2) {
-    /* background: linear-gradient(135deg, #dc2626, #ef4444); */
-    background-color: white;
-
     right: 50px;   /* space between */
 }
 
@@ -180,9 +177,9 @@ body {
     font-weight: 600;
 }
 
-.btn-view { background: #4975bb; }
-.btn-edit { background: #34ba65; }
-.btn-delete { background: #cf5555; }
+.btn-view { background: #4975bb;  color: #fff; }
+.btn-edit { background: #34ba65; color: #fff;}
+.btn-delete { background: #cf5555;color: #fff; }
 
 .btn-view:hover { background: #1d4ed8; }
 .btn-edit:hover { background: #15803d; }
