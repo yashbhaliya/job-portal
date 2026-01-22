@@ -30,6 +30,7 @@ function renderJobs() {
         jobCard.innerHTML = `
             <h3>${job.title}</h3>
             <p class="company-name">${job.companyName || 'N/A'}</p>
+            ${job.companyLogo && job.companyLogo !== null && job.companyLogo !== 'null' ? `<img src="${job.companyLogo}" alt="Company Logo" style="width: 40px; height: 30px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;">` : ''}
             <p><strong>Category:</strong> ${job.category}</p>
             <p><strong>Salary:</strong> ${job.minSalary === 'No salary needed' ? 'No salary needed' : `₹${job.minSalary} - ₹${job.maxSalary}`}</p>
             <p><strong>Experience:</strong> ${job.experience}${job.years ? ` (${job.years} years)` : ''}</p>
@@ -64,7 +65,7 @@ jobForm.addEventListener('submit', async function (e) {
         category: formData.get('category'),
         companyName: formData.get('companyName'),
         location: formData.get('location'),
-        companyLogo: formData.get('companyLogo'),
+        companyLogo: document.getElementById('companyLogoFile').getAttribute('data-base64') || null,
         minSalary: formData.get('minSalary') || 'No salary needed',
         maxSalary: formData.get('maxSalary') || 'No salary needed',
         experience: formData.get('experience'),
@@ -153,9 +154,16 @@ function openJobModal() {
         const job = jobs.find(j => j._id === editingJobId);
         const viewCard = document.createElement('div');
         viewCard.className = 'job-view-card';
+        
+        let logoHtml = '';
+        if (job.companyLogo && job.companyLogo !== null && job.companyLogo !== 'null') {
+            logoHtml = `<div class="view-field"><strong>Company Logo:</strong><br><img src="${job.companyLogo}" alt="Company Logo" style="max-width: 100px; max-height: 60px; border-radius: 8px; margin-top: 8px;"></div>`;
+        }
+        
         viewCard.innerHTML = `
             <h3>${job.title}</h3>
             <p class="company-name">${job.companyName || 'N/A'}</p>
+            ${logoHtml}
             <div class="view-field"><strong>Category:</strong> ${job.category}</div>
             <div class="view-field"><strong>Location:</strong> ${job.location || 'N/A'}</div>
             <div class="view-field"><strong>Salary:</strong> ${job.minSalary === 'No salary needed' ? 'No salary needed' : `₹${job.minSalary} - ₹${job.maxSalary}`}</div>
@@ -360,8 +368,10 @@ document.getElementById('companyLogoFile').addEventListener('change', function(e
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
+            const base64String = e.target.result;
+            
             preview.innerHTML = `
-                <img src="${e.target.result}" alt="Logo Preview" class="preview-image">
+                <img src="${base64String}" alt="Logo Preview" class="preview-image">
                 <div class="preview-info">
                     <div class="preview-name">${file.name}</div>
                     <div class="preview-size">${(file.size / 1024).toFixed(1)} KB</div>
@@ -369,6 +379,9 @@ document.getElementById('companyLogoFile').addEventListener('change', function(e
                 <button type="button" class="remove-file" onclick="removeLogoFile()">Remove</button>
             `;
             preview.classList.add('active');
+            
+            // Store base64 string for form submission
+            document.getElementById('companyLogoFile').setAttribute('data-base64', base64String);
         };
         reader.readAsDataURL(file);
     }
@@ -376,6 +389,7 @@ document.getElementById('companyLogoFile').addEventListener('change', function(e
 
 function removeLogoFile() {
     document.getElementById('companyLogoFile').value = '';
+    document.getElementById('companyLogoFile').removeAttribute('data-base64');
     document.getElementById('logoPreview').classList.remove('active');
     document.getElementById('logoPreview').innerHTML = '';
 }
