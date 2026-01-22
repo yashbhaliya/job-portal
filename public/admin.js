@@ -161,13 +161,17 @@ function openJobModal() {
         
         let logoHtml = '';
         if (job.companyLogo && job.companyLogo !== null && job.companyLogo !== 'null') {
-            logoHtml = `<div class="view-field"><strong>Company Logo:</strong><br><img src="${job.companyLogo}" alt="Company Logo" style="max-width: 100px; max-height: 60px; border-radius: 8px; margin-top: 8px;"></div>`;
+            logoHtml = `<img src="${job.companyLogo}" alt="Company Logo" class="job-view-logo">`;
         }
         
         viewCard.innerHTML = `
-            <h3>${job.title}</h3>
-            <p class="company-name">${job.companyName || 'N/A'}</p>
-            ${logoHtml}
+            <div class="job-view-header">
+                ${logoHtml}
+                <div class="job-view-title-section">
+                    <h3>${job.title}</h3>
+                    <p class="company-name">${job.companyName || 'N/A'}</p>
+                </div>
+            </div>
             <div class="view-field"><strong>Category:</strong> ${job.category}</div>
             <div class="view-field"><strong>Location:</strong> ${job.location || 'N/A'}</div>
             <div class="view-field"><strong>Salary:</strong> ${job.minSalary === 'No salary needed' ? 'No salary needed' : `₹${job.minSalary} - ₹${job.maxSalary}`}</div>
@@ -370,6 +374,14 @@ document.getElementById('companyLogoFile').addEventListener('change', function(e
     const preview = document.getElementById('logoPreview');
     
     if (file) {
+        // Check file size (16MB = 16 * 1024 * 1024 bytes)
+        const maxSize = 16 * 1024 * 1024;
+        if (file.size > maxSize) {
+            alert('Error: File size exceeds 16MB limit. Please choose a smaller image.');
+            e.target.value = ''; // Clear the input
+            return;
+        }
+        
         const reader = new FileReader();
         reader.onload = function(e) {
             const base64String = e.target.result;
