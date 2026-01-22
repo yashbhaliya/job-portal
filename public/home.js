@@ -35,4 +35,25 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdown.querySelector('.dropdown-content').style.display = 'none';
         });
     });
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.querySelector('.search-btn');
+    
+    function performSearch() {
+        const query = searchInput.value.trim();
+        if (query) {
+            console.log('Searching for:', query);
+            // Add your search logic here
+            alert(`Searching for: "${query}"`);
+        }
+    }
+    
+    searchBtn.addEventListener('click', performSearch);
+    
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
 });
