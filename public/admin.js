@@ -30,9 +30,10 @@ function renderJobs() {
         jobCard.innerHTML = `
             <h3>${job.title}</h3>
             <p class="company-name">${job.companyName || 'N/A'}</p>
-            <p><strong>Location:</strong> ${job.location || 'N/A'}</p>
-            <p><strong>Skills:</strong> ${job.skills ? job.skills.join(', ') : ''}</p>
-            <p><strong>Expiry:</strong> ${job.expiryDate}</p>
+            <p><strong>Category:</strong> ${job.category}</p>
+            <p><strong>Salary:</strong> ${job.minSalary === 'No salary needed' ? 'No salary needed' : `₹${job.minSalary} - ₹${job.maxSalary}`}</p>
+            <p><strong>Experience:</strong> ${job.experience}${job.years ? ` (${job.years} years)` : ''}</p>
+            <p><strong>Type:</strong> ${job.employmentTypes ? job.employmentTypes.join(', ') : ''}</p>
             ${job.featured ? '<span class="featured">⭐  </span>' : ''}
             ${job.urgent ? '<span class="urgent"> ⚡</span>' : ''}
             <div class="actions">
@@ -264,6 +265,33 @@ addJobBtn.addEventListener('click', () => {
     isViewMode = false;
     openJobModal();
 });
+
+// Theme toggle functionality
+function toggleTheme() {
+    const body = document.body;
+    const themeIcon = document.getElementById('theme-icon');
+    const themeText = document.getElementById('theme-text');
+    
+    if (body.getAttribute('data-theme') === 'dark') {
+        body.removeAttribute('data-theme');
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Dark';
+        localStorage.setItem('theme', 'light');
+    } else {
+        body.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Light';
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+// Load saved theme
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+    document.body.setAttribute('data-theme', 'dark');
+    document.getElementById('theme-icon').textContent = '☀️';
+    document.getElementById('theme-text').textContent = 'Light';
+}
 
 // File upload handling
 document.getElementById('companyLogoFile').addEventListener('change', function(e) {
