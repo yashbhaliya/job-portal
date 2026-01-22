@@ -69,7 +69,7 @@ body {
 /* ============================= */
 .jobs {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
     gap: 25px;
     width: 100%;
 }
@@ -94,7 +94,7 @@ body {
 
 
 .job-card:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-1px) scale(1.00);
     box-shadow: 0 15px 30px rgba(0,0,0,0.15);
 }
 
