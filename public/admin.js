@@ -28,9 +28,13 @@ function renderJobs() {
         const jobCard = document.createElement('div');
         jobCard.className = 'job-card';
         jobCard.innerHTML = `
-            <h3>${job.title}</h3>
-            <p class="company-name">${job.companyName || 'N/A'}</p>
-            ${job.companyLogo && job.companyLogo !== null && job.companyLogo !== 'null' ? `<img src="${job.companyLogo}" alt="Company Logo" style="width: 40px; height: 30px; object-fit: cover; border-radius: 4px; margin-bottom: 8px;">` : ''}
+            <div class="job-card-header">
+                ${job.companyLogo && job.companyLogo !== null && job.companyLogo !== 'null' ? `<img src="${job.companyLogo}" alt="Company Logo" class="job-card-logo">` : ''}
+                <div class="job-card-title-section">
+                    <h3>${job.title}</h3>
+                    <p class="company-name">${job.companyName || 'N/A'}</p>
+                </div>
+            </div>
             <p><strong>Category:</strong> ${job.category}</p>
             <p><strong>Salary:</strong> ${job.minSalary === 'No salary needed' ? 'No salary needed' : `₹${job.minSalary} - ₹${job.maxSalary}`}</p>
             <p><strong>Experience:</strong> ${job.experience}${job.years ? ` (${job.years} years)` : ''}</p>
