@@ -109,10 +109,20 @@ document.querySelector('.jobs').addEventListener('click', async function (e) {
     const job = jobs.find(j => j._id === jobId);
 
     if (target.classList.contains('btn-view')) {
+        console.log('View button clicked for job ID:', jobId);
+        console.log('Job data:', job);
+        
         isViewMode = true;
-        editingJobId = null;
-        populateForm(job);
-        openJobModal();
+        editingJobId = jobId;
+        
+        try {
+            populateForm(job);
+            openJobModal();
+            console.log('View modal opened successfully');
+        } catch (error) {
+            console.error('Error opening view modal:', error);
+            alert('Error opening view modal: ' + error.message);
+        }
     } else if (target.classList.contains('btn-edit')) {
         isViewMode = false;
         editingJobId = jobId;
@@ -132,28 +142,57 @@ function openJobModal() {
     const submitBtn = document.querySelector('.btn-primary');
     const skillBtn = document.querySelector('.skill-btn');
     const fileUploadBtn = document.querySelector('.file-upload-btn');
+    const jobForm = document.querySelector('.job-form');
     
     if (isViewMode) {
-        modalTitle.textContent = 'View Job';
-        // Make ALL inputs readonly/disabled
-        jobForm.querySelectorAll('input, select').forEach(el => {
-            el.readOnly = true;
-            el.disabled = true;
-        });
+        modalTitle.textContent = 'Job Details';
+        // Hide form and show card layout
+        jobForm.style.display = 'none';
+        
+        // Create view card layout
+        const job = jobs.find(j => j._id === editingJobId);
+        const viewCard = document.createElement('div');
+        viewCard.className = 'job-view-card';
+        viewCard.innerHTML = `
+            <h3>${job.title}</h3>
+            <p class="company-name">${job.companyName || 'N/A'}</p>
+            <div class="view-field"><strong>Category:</strong> ${job.category}</div>
+            <div class="view-field"><strong>Location:</strong> ${job.location || 'N/A'}</div>
+            <div class="view-field"><strong>Salary:</strong> ${job.minSalary === 'No salary needed' ? 'No salary needed' : `₹${job.minSalary} - ₹${job.maxSalary}`}</div>
+            <div class="view-field"><strong>Experience:</strong> ${job.experience}${job.years ? ` (${job.years} years)` : ''}</div>
+            <div class="view-field"><strong>Employment Type:</strong> ${job.employmentTypes ? job.employmentTypes.join(', ') : 'N/A'}</div>
+            <div class="view-field"><strong>Skills:</strong> ${job.skills ? job.skills.join(', ') : 'N/A'}</div>
+            <div class="view-field"><strong>Expiry Date:</strong> ${job.expiryDate || 'N/A'}</div>
+            <div class="job-view-badges">
+                ${job.featured ? '<span class="featured">⭐</span>' : ''}
+                ${job.urgent ? '<span class="urgent">⚡</span>' : ''}
+            </div>
+        `;
+        
+        // Insert view card after title
+        modalTitle.insertAdjacentElement('afterend', viewCard);
+        
+        // Hide all form controls
         document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'none');
-        skillBtn.style.display = 'none';
-        fileUploadBtn.style.display = 'none';
     } else {
         modalTitle.textContent = editingJobId ? 'Update Job' : 'Post New Job';
-        submitBtn.textContent = editingJobId ? 'Update Job' : 'Post Job';
+        if (submitBtn) submitBtn.textContent = editingJobId ? 'Update Job' : 'Post Job';
+        
+        // Show form and remove any existing view card
+        jobForm.style.display = 'block';
+        const existingViewCard = document.querySelector('.job-view-card');
+        if (existingViewCard) existingViewCard.remove();
+        
+        // Show all form controls
+        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
+        if (skillBtn) skillBtn.style.display = 'inline-block';
+        if (fileUploadBtn) fileUploadBtn.style.display = 'flex';
+        
         // Enable all inputs
         jobForm.querySelectorAll('input, select').forEach(el => {
             el.readOnly = false;
             el.disabled = false;
         });
-        document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
-        skillBtn.style.display = 'inline-block';
-        fileUploadBtn.style.display = 'flex';
     }
     jobModal.style.display = 'flex';
 }
@@ -162,14 +201,25 @@ function closeJobModal() {
     jobModal.style.display = 'none';
     editingJobId = null;
     isViewMode = false;
+    
+    // Remove view card if exists
+    const existingViewCard = document.querySelector('.job-view-card');
+    if (existingViewCard) existingViewCard.remove();
+    
+    // Show form
+    const jobForm = document.querySelector('.job-form');
+    jobForm.style.display = 'block';
     jobForm.reset();
+    
     currentSkills = [];
     renderSkillsList(false);
     
     // Clear logo preview
     const preview = document.getElementById('logoPreview');
-    preview.classList.remove('active');
-    preview.innerHTML = '';
+    if (preview) {
+        preview.classList.remove('active');
+        preview.innerHTML = '';
+    }
     
     // Re-enable all elements
     jobForm.querySelectorAll('input, select').forEach(el => {
@@ -177,8 +227,10 @@ function closeJobModal() {
         el.disabled = false;
     });
     document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => btn.style.display = 'block');
-    document.querySelector('.skill-btn').style.display = 'inline-block';
-    document.querySelector('.file-upload-btn').style.display = 'flex';
+    const skillBtn = document.querySelector('.skill-btn');
+    const fileUploadBtn = document.querySelector('.file-upload-btn');
+    if (skillBtn) skillBtn.style.display = 'inline-block';
+    if (fileUploadBtn) fileUploadBtn.style.display = 'flex';
 }
 
 function populateForm(job) {
@@ -264,6 +316,13 @@ addJobBtn.addEventListener('click', () => {
     editingJobId = null;
     isViewMode = false;
     openJobModal();
+});
+
+// Modal outside click to close
+document.getElementById('jobModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeJobModal();
+    }
 });
 
 // Theme toggle functionality
