@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Close menu when clicking outside
     document.addEventListener('click', function(e) {
-        if (!e.target.closest('#navMenu') && !e.target.closest('.menu-toggle')) {
+        if (navMenu && !e.target.closest('#navMenu') && !e.target.closest('.menu-toggle')) {
             navMenu.classList.remove('active');
             // Reset all dropdown states
             const categoryItem = document.querySelector('.category');
@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
             categoryLink.addEventListener('click', function(e) {
                 if (window.innerWidth <= 900) {
                     e.preventDefault();
+                    // Close other dropdown first
+                    if (employmentItem) employmentItem.classList.remove('active');
                     categoryItem.classList.toggle('active');
                 }
             });
@@ -57,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
             employmentLink.addEventListener('click', function(e) {
                 if (window.innerWidth <= 900) {
                     e.preventDefault();
+                    // Close other dropdown first
+                    if (categoryItem) categoryItem.classList.remove('active');
                     employmentItem.classList.toggle('active');
                 }
             });

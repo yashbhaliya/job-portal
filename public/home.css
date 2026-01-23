@@ -238,108 +238,6 @@ body {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ================= MOBILE NAVBAR ================= */
-@media (max-width: 900px) {
-
-    .nav-container {
-        justify-content: center;
-        position: relative;
-    }
-
-    .menu-toggle {
-        display: block;
-        position: absolute;
-        left: 22px;
-    }
-
-    .logo {
-        order: 0;
-    }
-
-    .nav-container ul {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 280px;
-        height: 100vh;
-        background: #0A223F;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 22px;
-        gap: 18px;
-        transition: left 0.35s ease;
-        z-index: 2000;
-    }
-
-    /* OPEN STATE */
-    .nav-container ul.active {
-        left: 0;
-    }
-
-    .nav-container ul li {
-        width: 100%;
-    }
-
-    .nav-container ul li a {
-        width: 100%;
-        padding: 12px 0;
-        font-size: 16px;
-        color: white;
-    }
-
-    /* Dropdown inside mobile */
-    .category-dropdown,
-    .Employment-Type-dropdown {
-        position: static;
-        width: 100%;
-        background: #122b52;
-        box-shadow: none;
-        border-radius: 10px;
-        margin-top: 8px;
-        display: none;
-    }
-
-    .category.active .category-dropdown,
-    .Employment-Type.active .Employment-Type-dropdown {
-        display: block;
-    }
-
-    .category-dropdown a,
-    .Employment-Type-dropdown a {
-        color: #e5e7eb;
-    }
-
-    /* CLOSE BUTTON */
-    .close-menu {
-        display: block;
-        color: white;
-        width: 100%;
-        margin-bottom: 12px;
-    }
-
-    /* Hide search on mobile */
-    .search {
-        display: none;
-    }
-}
-
 /* ================= HERO SECTION ================= */
 .hero {
     display: flex;
@@ -472,13 +370,120 @@ body {
     animation-delay: 1.5s;
 }
 
-/* ================= HERO MOBILE ================= */
-@media (max-width: 968px) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================= MOBILE NAVBAR ================= */
+@media (max-width: 900px) {
+
+    .nav-container {
+        justify-content: center;
+        position: relative;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        left: 22px;
+    }
+
+    .logo {
+        order: 0;
+    }
+
+    .nav-container ul {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 280px;
+        height: 100vh;
+        background: #0A223F;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px;
+        gap: 18px;
+        transition: left 0.35s ease;
+        z-index: 2000;
+    }
+
+    /* OPEN STATE */
+    .nav-container ul.active {
+        left: 0;
+    }
+
+    .nav-container ul li {
+        width: 100%;
+    }
+
+    .nav-container ul li a {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 16px;
+        color: white;
+    }
+
+    /* Disable desktop hover on mobile */
+    .category:hover .category-dropdown,
+    .Employment-Type:hover .Employment-Type-dropdown {
+        display: none;
+    }
+
+    /* Dropdown inside mobile */
+    .category-dropdown,
+    .Employment-Type-dropdown {
+        position: static;
+        width: 100%;
+        background: #122b52;
+        box-shadow: none;
+        border-radius: 10px;
+        margin-top: 8px;
+        display: none;
+        animation: none;
+    }
+
+    .category.active .category-dropdown,
+    .Employment-Type.active .Employment-Type-dropdown {
+        display: block !important;
+    }
+
+    .category-dropdown a,
+    .Employment-Type-dropdown a {
+        color: #e5e7eb;
+        margin-left: 0;
+        padding: 8px 16px;
+    }
+
+    /* CLOSE BUTTON */
+    .close-menu {
+        display: block;
+        color: white;
+        width: 100%;
+        margin-bottom: 12px;
+    }
+
+    /* Hide search on mobile */
+    .search {
+        display: none;
+    }
     .hero {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
-        margin: 0px auto;
+        margin: 40px auto;
         padding: 0 22px;
         align-items: center;
     }
@@ -529,4 +534,6 @@ body {
     .job-tag small {
         font-size: 10px;
     }
+
 }
+
