@@ -542,7 +542,7 @@
 }
 
 .job-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-1px);
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
 }
 
@@ -618,13 +618,66 @@
 .job-icon.finance { background: #fefce8; }
 .job-icon.design { background: #fdf4ff; }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .jobs-grid {
-        grid-template-columns: 1fr;
-    }
 
-    .job-card {
-        padding: 22px;
-    }
+.job-header {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    gap: 15px;
+    /* align-items: center; */
+    margin-bottom: 10px;
+}
+
+.job-header h3 {
+    color: #1f2937;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+.title-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.company-small {
+    color: #6b7280;
+    font-size: 12px;
+    font-weight: 400;
+}
+.badges-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.badge {
+    position: static;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.job-card .badge {
+    position: absolute;
+    top: 16px;
+    right: 50px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.job-card .badge.urgent {
+    /* background: #ef4444; */
+    color: white;
+}
+
+.job-card .badge.featured {
+    /* background: #f59e0b; */
+    color: white;
+    right: 80px;
 }

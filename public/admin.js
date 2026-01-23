@@ -69,7 +69,6 @@ jobForm.addEventListener('submit', async function (e) {
         category: formData.get('category'),
         companyName: formData.get('companyName'),
         location: formData.get('location'),
-        companyLogo: document.getElementById('companyLogoFile').getAttribute('data-base64') || null,
         minSalary: formData.get('minSalary') || 'No salary needed',
         maxSalary: formData.get('maxSalary') || 'No salary needed',
         experience: formData.get('experience'),
@@ -80,6 +79,12 @@ jobForm.addEventListener('submit', async function (e) {
         featured: formData.has('featured'),
         urgent: formData.has('urgent')
     };
+
+    // Only include companyLogo if it's being updated (new upload)
+    const newLogo = document.getElementById('companyLogoFile').getAttribute('data-base64');
+    if (newLogo) {
+        jobData.companyLogo = newLogo;
+    }
 
     try {
         let url = 'http://localhost:5000/jobs';

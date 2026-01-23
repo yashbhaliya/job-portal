@@ -113,10 +113,10 @@ async function loadJobs() {
         
         function getCategoryIcon(category) {
             const icons = {
-                'IT & Software': { emoji: '💻', class: 'it' },
-                'Marketing': { emoji: '📈', class: 'marketing' },
-                'Finance': { emoji: '💰', class: 'finance' },
-                'Design': { emoji: '🎨', class: 'design' }
+                'IT & Software': {  class: 'it' },
+                'Marketing': {  class: 'marketing' },
+                'Finance': {  class: 'finance' },
+                'Design': {  class: 'design' }
             };
             return icons[category] || { emoji: '💼', class: 'default' };
         }
@@ -125,20 +125,25 @@ async function loadJobs() {
         container.innerHTML = jobs.map(job => {
             const icon = getCategoryIcon(job.category);
             const salary = job.minSalary && job.maxSalary ? `$${job.minSalary} - $${job.maxSalary}` : 'Salary not specified';
-            const experience = job.experience || 'Not specified';
+            const experience = job.experience === 'freshman' ? 'Fresher' : job.experience || 'Not specified';
+            const experienceYears = job.years ? ` (${job.years} years)` : '';
+            const fullExperience = experience + experienceYears;
             const employmentType = job.employmentTypes && job.employmentTypes.length > 0 ? job.employmentTypes.join(', ') : 'Not specified';
             
             return `
                 <div class="job-card">
-                    ${job.companyLogo ? `<img src="${job.companyLogo}" alt="${job.companyName}" class="company-logo">` : `<span class="job-icon ${icon.class}">${icon.emoji}</span>`}
+                    <div class="job-header">
+                        ${job.companyLogo ? `<img src="${job.companyLogo}" alt="${job.companyName}" class="company-logo">` : `<span class="job-icon ${icon.class}">${icon.emoji}</span>`}
+                        <div class="title-section">
+                            <h3>${job.title}</h3>
+                            <div class="company-small">${job.companyName}</div>
+                        </div>
+                    </div>
                     <div class="job-info">
-                        <h3>${job.title}</h3>
-                        <div class="company">${job.companyName}</div>
-                        <div class="category">${job.category}</div>
-                        <div class="salary">${salary}</div>
-                        <div class="experience">Experience: ${experience}</div>
-                        <div class="employment-type">${employmentType}</div>
-                        <div class="location">${job.location}</div>
+                        <div class="category"><strong>Category:</strong> ${job.category}</div>
+                        <div class="salary"><strong>Salary:</strong> ${salary}</div>
+                        <div class="experience"><strong>Experience:</strong> ${fullExperience}</div>
+                        <div class="employment-type"><strong>Type:</strong> ${employmentType}</div>
                         ${job.urgent ? '<span class="badge urgent">⭐</span>' : ''}
                         ${job.featured ? '<span class="badge featured">⚡</span>' : ''}
                     </div>
