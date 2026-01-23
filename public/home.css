@@ -120,16 +120,17 @@ body {
 .category-dropdown,
 .Employment-Type-dropdown {
     position: absolute;
-    top: 150%;
+    top: 100%;
     left: 0;
     min-width: 210px;
     background: #ffffff;
     color: black;
     border-radius: 14px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
     padding: 10px 0;
     display: none;
     animation: dropdownFade .25s ease;
+    margin-top: 5px;
 }
 
 .category-dropdown a,
@@ -152,6 +153,24 @@ body {
 .category:hover .category-dropdown,
 .Employment-Type:hover .Employment-Type-dropdown {
     display: block;
+}
+
+/* Keep dropdown open when hovering over dropdown itself */
+.category-dropdown:hover,
+.Employment-Type-dropdown:hover {
+    display: block;
+}
+
+/* Add gap to prevent dropdown from closing when moving cursor */
+.category-dropdown::before,
+.Employment-Type-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background: transparent;
 }
 
 /* ================= SEARCH ================= */
@@ -326,7 +345,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 60px auto;
     padding: 0 22px;
     gap: 60px;
@@ -366,6 +385,17 @@ body {
     border: 2px dashed rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     position: relative;
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
 }
 
 .job-tag {
@@ -378,6 +408,7 @@ body {
     align-items: center;
     gap: 10px;
     min-width: 160px;
+    animation: float 3s ease-in-out infinite;
 }
 
 .job-tag .icon {
@@ -419,22 +450,117 @@ body {
 
 .tag1 {
     top: 40px;
- right: 40px;
+    right: 40px;
+    animation-delay: 0s;
 }
 
 .tag2 {
     top: 130px;
     left: 30px;
+    animation-delay: 0.5s;
 }
 
 .tag3 {
     bottom: 120px;
     right: 20px;
+    animation-delay: 1s;
 }
 
 .tag4 {
     bottom: 20px;
     left: 80px;
+    animation-delay: 1.5s;
 }
 
+@media (max-width: 900px) {
 
+    
+     .hero {
+        display: grid;
+        grid-template-rows: 45% 55%;
+        height: 50vh;
+        max-height: 50vh;
+        margin: 20px auto;
+        padding: 0 16px;
+        overflow: hidden;
+        gap: 0;
+    }
+
+    /* LEFT CONTENT */
+    .hero-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        text-align: left;
+        padding: 0 10px;
+    }
+
+    .hero-left h1 {
+        font-size: 20px;
+        line-height: 1.25;
+        margin-bottom: 10px;
+    }
+
+    .hero-left p {
+        font-size: 10px;
+        line-height: 1.5;
+        max-width: 40%;
+        /* margin: 0 auto; */
+    }
+
+   .hero-right {
+        display: flex;
+        place-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* ORBIT */
+    .orbit {
+        width: 190px;
+        height: 190px;
+        border-width: 1.5px;
+    }
+
+    /* JOB TAGS */
+    .job-tag {
+        transform: scale(0.8);
+        padding: 10px 14px;
+        min-width: 140px;
+    }
+
+    .job-tag .icon {
+        width: 34px;
+        height: 34px;
+        font-size: 16px;
+    }
+
+    .job-tag strong {
+        font-size: 13px;
+    }
+
+    .job-tag small {
+        font-size: 11px;
+    }
+
+    /* TAG POSITIONS (MOBILE SAFE) */
+    .tag1 {
+        top: 20px;
+        right: 10px;
+    }
+
+    .tag2 {
+        top: 100px;
+        left: 10px;
+    }
+
+    .tag3 {
+        bottom: 90px;
+        right: 5px;
+    }
+
+    .tag4 {
+        bottom: 10px;
+        left: 40px;
+    }
+}
