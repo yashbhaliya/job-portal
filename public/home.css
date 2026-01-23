@@ -681,3 +681,23 @@
     color: white;
     right: 80px;
 }
+.top-message {
+    padding: 8px 12px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.urgent-msg {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.featured-msg {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid #fed7aa;
+}

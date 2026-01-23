@@ -73,10 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function performSearch() {
         const query = searchInput ? searchInput.value.trim() : '';
-        if (query) {
-            console.log('Searching for:', query);
-            alert(`Searching for: "${query}"`);
-        }
+        searchJobs(query);
     }
     
     if (searchInput && searchBtn) {
@@ -89,6 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+let allJobs = [];
+
 // Fetch and display jobs from MongoDB
 async function loadJobs() {
     try {
@@ -103,57 +102,82 @@ async function loadJobs() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const jobs = await response.json();
-        
-        const container = document.getElementById('jobsContainer');
-        if (jobs.length === 0) {
-            container.innerHTML = '<p>No jobs available</p>';
-            return;
-        }
-        
-        function getCategoryIcon(category) {
-            const icons = {
-                'IT & Software': {  class: 'it' },
-                'Marketing': {  class: 'marketing' },
-                'Finance': {  class: 'finance' },
-                'Design': {  class: 'design' }
-            };
-            return icons[category] || { emoji: '💼', class: 'default' };
-        }
-        
-        
-        container.innerHTML = jobs.map(job => {
-            const icon = getCategoryIcon(job.category);
-            const salary = job.minSalary && job.maxSalary ? `$${job.minSalary} - $${job.maxSalary}` : 'Salary not specified';
-            const experience = job.experience === 'freshman' ? 'Fresher' : job.experience || 'Not specified';
-            const experienceYears = job.years ? ` (${job.years} years)` : '';
-            const fullExperience = experience + experienceYears;
-            const employmentType = job.employmentTypes && job.employmentTypes.length > 0 ? job.employmentTypes.join(', ') : 'Not specified';
-            
-            return `
-                <div class="job-card">
-                    <div class="job-header">
-                        ${job.companyLogo ? `<img src="${job.companyLogo}" alt="${job.companyName}" class="company-logo">` : `<span class="job-icon ${icon.class}">${icon.emoji}</span>`}
-                        <div class="title-section">
-                            <h3>${job.title}</h3>
-                            <div class="company-small">${job.companyName}</div>
-                        </div>
-                    </div>
-                    <div class="job-info">
-                        <div class="category"><strong>Category:</strong> ${job.category}</div>
-                        <div class="salary"><strong>Salary:</strong> ${salary}</div>
-                        <div class="experience"><strong>Experience:</strong> ${fullExperience}</div>
-                        <div class="employment-type"><strong>Type:</strong> ${employmentType}</div>
-                        ${job.urgent ? '<span class="badge urgent">⭐</span>' : ''}
-                        ${job.featured ? '<span class="badge featured">⚡</span>' : ''}
-                    </div>
-                </div>
-            `;
-        }).join('');
+        allJobs = await response.json();
+        displayJobs(allJobs);
     } catch (error) {
         console.error('Error loading jobs:', error);
         document.getElementById('jobsContainer').innerHTML = '<p>Unable to load jobs. Please make sure the server is running on port 5000.</p>';
     }
+}
+
+function displayJobs(jobs) {
+    const container = document.getElementById('jobsContainer');
+    if (jobs.length === 0) {
+        container.innerHTML = '<p>No jobs available</p>';
+        return;
+    }
+    
+    function getCategoryIcon(category) {
+        const icons = {
+            'IT & Software': {  class: 'it' },
+            'Marketing': {  class: 'marketing' },
+            'Finance': {  class: 'finance' },
+            'Design': {  class: 'design' }
+        };
+        return icons[category] || { emoji: '💼', class: 'default' };
+    }
+    
+    container.innerHTML = jobs.map(job => {
+        const icon = getCategoryIcon(job.category);
+        const salary = job.minSalary && job.maxSalary ? `$${job.minSalary} - $${job.maxSalary}` : 'Salary not specified';
+        const experience = job.experience === 'freshman' ? 'Fresher' : job.experience || 'Not specified';
+        const experienceYears = job.years ? ` (${job.years} years)` : '';
+        const fullExperience = experience + experienceYears;
+        const employmentType = job.employmentTypes && job.employmentTypes.length > 0 ? job.employmentTypes.join(', ') : 'Not specified';
+        
+        return `
+            <div class="job-card">
+                <div class="job-header">
+                    ${job.companyLogo ? `<img src="${job.companyLogo}" alt="${job.companyName}" class="company-logo">` : `<span class="job-icon ${icon.class}">${icon.emoji}</span>`}
+                    <div class="title-section">
+                        <h3>${job.title}</h3>
+                        <div class="company-small">${job.companyName}</div>
+                    </div>
+                </div>
+                <div class="job-info">
+                    <div class="category"><strong>Category:</strong> ${job.category}</div>
+                    <div class="salary"><strong>Salary:</strong> ${salary}</div>
+                    <div class="experience"><strong>Experience:</strong> ${fullExperience}</div>
+                    <div class="employment-type"><strong>Type:</strong> ${employmentType}</div>
+                    <div class="expiry-date"><strong>Expires:</strong> ${job.expiryDate || 'Not specified'}</div>
+                    ${job.urgent ? '<span class="badge urgent" title="Urgent">⭐</span>' : ''}
+                    ${job.featured ? '<span class="badge featured" title="Featured">⚡</span>' : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function searchJobs(query) {
+    if (!query.trim()) {
+        displayJobs(allJobs);
+        return;
+    }
+    
+    const filteredJobs = allJobs.filter(job => {
+        const searchText = query.toLowerCase();
+        return (
+            job.title.toLowerCase().includes(searchText) ||
+            job.companyName.toLowerCase().includes(searchText) ||
+            job.category.toLowerCase().includes(searchText) ||
+            job.location.toLowerCase().includes(searchText) ||
+            job.experience.toLowerCase().includes(searchText) ||
+            (job.employmentTypes && job.employmentTypes.some(type => type.toLowerCase().includes(searchText))) ||
+            (job.skills && job.skills.some(skill => skill.toLowerCase().includes(searchText)))
+        );
+    });
+    
+    displayJobs(filteredJobs);
 }
 
 // Load jobs when page loads
