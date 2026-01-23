@@ -8,51 +8,68 @@
     <title>Job-Portal</title>
 </head>
 
-<body>
-    <header class="navbar">
-        <div class="logo">
-            <img src="/img/job-portal-logo.jpg" alt="">Job-Portal
+<body> 
+ <header class="main-header">
+        <div class="nav-container">
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <!-- Logo -->
+            <div class="logo">
+                <img src="/img/job-portal-logo.jpg" alt="job-portal">
+                Job-Portal
+            </div>
+
+            <!-- Menu -->
+
+            <ul>
+                <div class="close-menu">
+                    <span><i class="fas fa-times"></i> CLOSE</span>
+                </div>
+                <li><a href="home.html">Home</a></li>
+
+                <li class="category">
+                    <a href="#">
+                        Category <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+
+                    <!-- Dropdown -->
+                    <div class="category-dropdown">
+                        <a href="#">IT & Software</a>
+                        <a href="#">Marketing</a>
+                        <a href="#">Finance</a>
+                        <a href="#">Design</a>
+
+                    </div>
+                </li>
+
+                <li class="Employment-Type">
+                    <a href="#">
+                        Employment-Type <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+
+                    <!-- Dropdown -->
+                    <div class="Employment-Type-dropdown">
+                        <a href="#">Full-time</a>
+                        <a href="#">Part-time </a>
+                        <a href="#"> Remore</a>
+                        <a href="#"> Internship</a>
+
+                    </div>
+                </li>
+
+                <li><a href="#">Featured</a></li>
+                <li><a href="#">Urgent</a></li>
+
+            </ul>
+            <div class="search">
+                <input type="text" placeholder="Search jobs...">
+                <button>Search</button>
+            </div>
+
         </div>
-
-
-
-        <nav>
-            <a class="active" href="#">Home</a>
-
-            <!-- Category Dropdown -->
-            <div class="dropdown">
-                <button class="dropbtn">Category ▾</button>
-                <div class="dropdown-content">
-                    <a href="#">IT & Software</a>
-                    <a href="#">Marketing</a>
-                    <a href="#">Finance</a>
-                    <a href="#">Design</a>
-                </div>
-            </div>
-
-            <!-- Employment Type Dropdown -->
-            <div class="dropdown">
-                <button class="dropbtn">Employment-Type ▾</button>
-                <div class="dropdown-content">
-                    <a href="#">Full-time</a>
-                    <a href="#">Part-time</a>
-                    <a href="#">Remote</a>
-                    <a href="#">Internship</a>
-                </div>
-            </div>
-
-            <a href="#">Featured</a>
-            <a href="#">Urgent</a>
-
-            
-        </nav>
-         <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search jobs, companies, locations..."
-                    class="search-input">
-                <button class="search-btn">Search</button>
-            </div>
     </header>
-
 
     <section class="hero">
         <div class="hero-left">
