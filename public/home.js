@@ -1,66 +1,87 @@
 // Dropdown functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const dropdowns = document.querySelectorAll('.dropdown');
+    // Mobile menu toggle
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navMenu = document.getElementById("navMenu");
+    const closeMenu = document.querySelector(".close-menu");
+
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+        });
+    }
+
+    if (closeMenu && navMenu) {
+        closeMenu.addEventListener("click", () => {
+            navMenu.classList.remove("active");
+            // Reset all dropdown states
+            const categoryItem = document.querySelector('.category');
+            const employmentItem = document.querySelector('.Employment-Type');
+            if (categoryItem) categoryItem.classList.remove('active');
+            if (employmentItem) employmentItem.classList.remove('active');
+        });
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('#navMenu') && !e.target.closest('.menu-toggle')) {
+            navMenu.classList.remove('active');
+            // Reset all dropdown states
+            const categoryItem = document.querySelector('.category');
+            const employmentItem = document.querySelector('.Employment-Type');
+            if (categoryItem) categoryItem.classList.remove('active');
+            if (employmentItem) employmentItem.classList.remove('active');
+        }
+    });
+
+    // Desktop dropdown functionality
+    const categoryItem = document.querySelector('.category');
+    const employmentItem = document.querySelector('.Employment-Type');
     
-    dropdowns.forEach(dropdown => {
-        const btn = dropdown.querySelector('.dropbtn');
-        const content = dropdown.querySelector('.dropdown-content');
-        
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            // Close other dropdowns
-            dropdowns.forEach(other => {
-                if (other !== dropdown) {
-                    other.querySelector('.dropdown-content').style.display = 'none';
+    // Mobile dropdown toggle
+    if (categoryItem) {
+        const categoryLink = categoryItem.querySelector('.nav-a');
+        if (categoryLink) {
+            categoryLink.addEventListener('click', function(e) {
+                if (window.innerWidth <= 900) {
+                    e.preventDefault();
+                    categoryItem.classList.toggle('active');
                 }
             });
-            
-            // Toggle current dropdown
-            content.style.display = content.style.display === 'block' ? 'none' : 'block';
-        });
-        
-        // Handle dropdown item clicks
-        content.addEventListener('click', function(e) {
-            if (e.target.tagName === 'A') {
-                btn.textContent = e.target.textContent + ' ▾';
-                content.style.display = 'none';
-            }
-        });
-    });
+        }
+    }
     
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function() {
-        dropdowns.forEach(dropdown => {
-            dropdown.querySelector('.dropdown-content').style.display = 'none';
-        });
-    });
+    if (employmentItem) {
+        const employmentLink = employmentItem.querySelector('.nav-a');
+        if (employmentLink) {
+            employmentLink.addEventListener('click', function(e) {
+                if (window.innerWidth <= 900) {
+                    e.preventDefault();
+                    employmentItem.classList.toggle('active');
+                }
+            });
+        }
+    }
 
     // Search functionality
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.querySelector('.search-btn');
     
     function performSearch() {
-        const query = searchInput.value.trim();
+        const query = searchInput ? searchInput.value.trim() : '';
         if (query) {
             console.log('Searching for:', query);
-            // Add your search logic here
             alert(`Searching for: "${query}"`);
         }
     }
     
-    searchBtn.addEventListener('click', performSearch);
-    
-    searchInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
+    if (searchInput && searchBtn) {
+        searchBtn.addEventListener('click', performSearch);
+        
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    }
 });
-
-// Mobile menu toggle function
-function toggleMenu() {
-    const navMenu = document.getElementById('navMenu');
-    navMenu.classList.toggle('active');
-}
-

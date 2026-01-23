@@ -5,72 +5,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Job-Portal</title>
 </head>
 
-<body> 
- <header class="main-header">
+<body>
+    <header class="main-header">
         <div class="nav-container">
             <div class="menu-toggle">
                 <i class="fas fa-bars"></i>
             </div>
-
+            
             <!-- Logo -->
             <div class="logo">
                 <img src="/img/job-portal-logo.jpg" alt="job-portal">
                 Job-Portal
             </div>
 
-            <!-- Menu -->
-
-            <ul>
+            <!-- Navigation Menu -->
+            <ul id="navMenu">
                 <div class="close-menu">
                     <span><i class="fas fa-times"></i> CLOSE</span>
                 </div>
-                <li><a href="home.html">Home</a></li>
+                <li><a href="home.html" class="nav-a">Home</a></li>
 
                 <li class="category">
-                    <a href="#">
+                    <a href="#" class="nav-a">
                         Category <i class="fa-solid fa-chevron-down"></i>
                     </a>
-
-                    <!-- Dropdown -->
                     <div class="category-dropdown">
                         <a href="#">IT & Software</a>
                         <a href="#">Marketing</a>
                         <a href="#">Finance</a>
                         <a href="#">Design</a>
-
                     </div>
                 </li>
 
                 <li class="Employment-Type">
-                    <a href="#">
+                    <a href="#" class="nav-a">
                         Employment-Type <i class="fa-solid fa-chevron-down"></i>
                     </a>
-
-                    <!-- Dropdown -->
                     <div class="Employment-Type-dropdown">
                         <a href="#">Full-time</a>
-                        <a href="#">Part-time </a>
-                        <a href="#"> Remore</a>
-                        <a href="#"> Internship</a>
-
+                        <a href="#">Part-time</a>
+                        <a href="#">Remote</a>
+                        <a href="#">Internship</a>
                     </div>
                 </li>
 
-                <li><a href="#">Featured</a></li>
-                <li><a href="#">Urgent</a></li>
-
+                <li><a href="#" class="nav-a">Featured</a></li>
+                <li><a href="#" class="nav-a">Urgent</a></li>
             </ul>
+            
             <div class="search">
-                <input type="text" placeholder="Search jobs...">
-                <button>Search</button>
+                <input type="text" id="searchInput" placeholder="Search jobs...">
+                <button class="search-btn">Search</button>
             </div>
-
         </div>
     </header>
-
+    
     <section class="hero">
         <div class="hero-left">
             <h1>Smarter Careers<br>Start in Tech</h1>
