@@ -89,3 +89,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+// Fetch and display jobs from MongoDB
+async function loadJobs() {
+    try {
+        const response = await fetch('http://localhost:5000/jobs', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const jobs = await response.json();
+        
+        const container = document.getElementById('jobsContainer');
+        if (jobs.length === 0) {
+            container.innerHTML = '<p>No jobs available</p>';
+            return;
+        }
+        
+        function getCategoryIcon(category) {
+            const icons = {
+                'IT & Software': { emoji: '💻', class: 'it' },
+                'Marketing': { emoji: '📈', class: 'marketing' },
+                'Finance': { emoji: '💰', class: 'finance' },
+                'Design': { emoji: '🎨', class: 'design' }
+            };
+            return icons[category] || { emoji: '💼', class: 'default' };
+        }
+        
+        
+        container.innerHTML = jobs.map(job => {
+            const icon = getCategoryIcon(job.category);
+            const salary = job.minSalary && job.maxSalary ? `$${job.minSalary} - $${job.maxSalary}` : 'Salary not specified';
+            const experience = job.experience || 'Not specified';
+            const employmentType = job.employmentTypes && job.employmentTypes.length > 0 ? job.employmentTypes.join(', ') : 'Not specified';
+            
+            return `
+                <div class="job-card">
+                    ${job.companyLogo ? `<img src="${job.companyLogo}" alt="${job.companyName}" class="company-logo">` : `<span class="job-icon ${icon.class}">${icon.emoji}</span>`}
+                    <div class="job-info">
+                        <h3>${job.title}</h3>
+                        <div class="company">${job.companyName}</div>
+                        <div class="category">${job.category}</div>
+                        <div class="salary">${salary}</div>
+                        <div class="experience">Experience: ${experience}</div>
+                        <div class="employment-type">${employmentType}</div>
+                        <div class="location">${job.location}</div>
+                        ${job.urgent ? '<span class="badge urgent">⭐</span>' : ''}
+                        ${job.featured ? '<span class="badge featured">⚡</span>' : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch (error) {
+        console.error('Error loading jobs:', error);
+        document.getElementById('jobsContainer').innerHTML = '<p>Unable to load jobs. Please make sure the server is running on port 5000.</p>';
+    }
+}
+
+// Load jobs when page loads
+document.addEventListener('DOMContentLoaded', loadJobs);

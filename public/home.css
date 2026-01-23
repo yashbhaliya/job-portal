@@ -500,22 +500,131 @@
 }
 
 /* ================= MAIN SECTION ================= */
+/* ===== JOB SECTION ===== */
 .main {
-    background: white;
-    padding: 30px 22px;
-    text-align: center;
+    padding: 60px 20px;
+    background: #f5f7fb;
 }
 
 .job-h2 {
-    font-size: 36px;
+    text-align: center;
+    font-size: 32px;
     font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .job-p {
-    font-size: 18px;
+    text-align: center;
     color: #6b7280;
-    max-width: 600px;
-    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+/* ===== GRID ===== */
+.jobs-grid {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 30px;
+}
+
+/* ===== CARD ===== */
+.job-card {
+    position: relative;
+    background: #fff;
+    border-radius: 22px;
+    padding: 25px 28px 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    border-top: 4px solid transparent;
+    border-image: linear-gradient(90deg, #6366f1, #a855f7);
+    border-image-slice: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.job-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== TOP ICON / LOGO ===== */
+.company-logo,
+.job-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.company-logo {
+    object-fit: cover;
+}
+
+/* ===== INFO ===== */
+.job-info h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 6px;
+}
+
+.company {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+.category,
+.salary,
+.experience,
+.employment-type,
+.location {
+    font-size: 15px;
+    color: #374151;
+    margin-bottom: 10px;
+}
+
+.category strong,
+.salary strong {
+    color: #111827;
+}
+
+/* ===== BADGES ===== */
+.badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 14px;
+}
+
+.badge.urgent {
+    color: #f97316;
+}
+
+.badge.featured {
+    color: #facc15;
+}
+
+/* ===== ICON COLORS ===== */
+.job-icon.it { background: #eef2ff; }
+.job-icon.marketing { background: #ecfeff; }
+.job-icon.finance { background: #fefce8; }
+.job-icon.design { background: #fdf4ff; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .jobs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .job-card {
+        padding: 22px;
+    }
 }
