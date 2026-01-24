@@ -136,7 +136,7 @@ function displayJobs(jobs) {
         const employmentType = job.employmentTypes && job.employmentTypes.length > 0 ? job.employmentTypes.join(', ') : 'Not specified';
         
         return `
-            <div class="job-card">
+            <div class="job-card" onclick="openJobDetails('${job._id}')" style="cursor: pointer;">
                 <div class="job-header">
                     ${job.companyLogo ? `<img src="${job.companyLogo}" alt="${job.companyName}" class="company-logo">` : `<span class="job-icon ${icon.class}">${icon.emoji}</span>`}
                     <div class="title-section">
@@ -178,6 +178,11 @@ function searchJobs(query) {
     });
     
     displayJobs(filteredJobs);
+}
+
+// Function to open job details page
+function openJobDetails(jobId) {
+    window.location.href = `detail.html?id=${jobId}`;
 }
 
 // Load jobs when page loads

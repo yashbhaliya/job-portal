@@ -1,0 +1,132 @@
+// Get job ID from URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const jobId = urlParams.get('id');
+
+// Load job details when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize mobile menu
+    initializeMobileMenu();
+    
+    if (jobId) {
+        loadJobDetails(jobId);
+    } else {
+        // Redirect to home if no job ID
+        window.location.href = 'home.html';
+    }
+});
+
+// Mobile menu functionality
+function initializeMobileMenu() {
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navMenu = document.getElementById("navMenu");
+    const closeMenu = document.querySelector(".close-menu");
+
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+        });
+    }
+
+    if (closeMenu && navMenu) {
+        closeMenu.addEventListener("click", () => {
+            navMenu.classList.remove("active");
+        });
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (navMenu && !e.target.closest('#navMenu') && !e.target.closest('.menu-toggle')) {
+            navMenu.classList.remove('active');
+        }
+    });
+}
+
+// Fetch job details from server
+async function loadJobDetails(id) {
+    try {
+        const response = await fetch(`http://localhost:5000/jobs/${id}`);
+        
+        if (!response.ok) {
+            if (response.status === 404) {
+                showError('Job not found. It may have been removed or the link is invalid.');
+            } else {
+                showError(`Server error: ${response.status}. Please try again later.`);
+            }
+            return;
+        }
+        
+        const job = await response.json();
+        displayJobDetails(job);
+    } catch (error) {
+        console.error('Error loading job details:', error);
+        showError('Unable to connect to server. Please check your internet connection and try again.');
+    }
+}
+
+// Show error message
+function showError(message) {
+    document.getElementById('jobContainer').style.display = 'none';
+    document.getElementById('errorContainer').style.display = 'block';
+    document.getElementById('errorMessage').textContent = message;
+}
+
+// Display job details on the page
+function displayJobDetails(job) {
+    // Update page title
+    document.title = `${job.title} - ${job.companyName} | Job-Portal`;
+    
+    // Update job header
+    document.getElementById('jobTitle').textContent = job.title;
+    document.getElementById('companyName').textContent = job.companyName;
+    
+    // Update company logo
+    const logoElement = document.getElementById('companyLogo');
+    if (job.companyLogo) {
+        logoElement.src = job.companyLogo;
+        logoElement.style.display = 'block';
+    } else {
+        logoElement.style.display = 'none';
+    }
+    
+    // Update badges
+    const urgentBadge = document.getElementById('urgentBadge');
+    const featuredBadge = document.getElementById('featuredBadge');
+    
+    if (job.urgent) {
+        urgentBadge.style.display = 'inline-block';
+    }
+    
+    if (job.featured) {
+        featuredBadge.style.display = 'inline-block';
+    }
+    
+    // Update job information
+    document.getElementById('category').textContent = job.category || 'Not specified';
+    
+    const salary = job.minSalary && job.maxSalary ? 
+        `$${job.minSalary} - $${job.maxSalary}` : 
+        'Salary not specified';
+    document.getElementById('salary').textContent = salary;
+    
+    const experience = job.experience === 'freshman' ? 'Fresher' : job.experience || 'Not specified';
+    const experienceYears = job.years ? ` (${job.years} years)` : '';
+    document.getElementById('experience').textContent = experience + experienceYears;
+    
+    const employmentType = job.employmentTypes && job.employmentTypes.length > 0 ? 
+        job.employmentTypes.join(', ') : 
+        'Not specified';
+    document.getElementById('employmentType').textContent = employmentType;
+    
+    document.getElementById('location').textContent = job.location || 'Not specified';
+    document.getElementById('expiryDate').textContent = job.expiryDate || 'Not specified';
+    
+    // Update skills
+    const skillsList = document.getElementById('skillsList');
+    if (job.skills && job.skills.length > 0) {
+        skillsList.innerHTML = job.skills.map(skill => 
+            `<span class="skill-tag">${skill}</span>`
+        ).join('');
+    } else {
+        skillsList.innerHTML = '<p>No specific skills listed.</p>';
+    }
+}
