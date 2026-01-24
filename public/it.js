@@ -168,8 +168,9 @@ async function loadJobs() {
         }
         
         allJobs = await response.json();
-        // Show all jobs initially
-        displayJobs(allJobs);
+        // Filter to show only IT & Software jobs
+        const itJobs = allJobs.filter(job => job.category === 'IT & Software');
+        displayJobs(itJobs);
     } catch (error) {
         console.error('Error loading jobs:', error);
         document.getElementById('jobsContainer').innerHTML = '<p>Unable to load jobs. Please make sure the server is running on port 5000.</p>';
@@ -289,11 +290,6 @@ function applyFilters() {
     // Get search term
     const searchTerm = document.getElementById('filterSearch')?.value.toLowerCase().trim() || '';
     
-    // Get selected categories
-    const selectedCategories = Array.from(document.querySelectorAll('.filter-options input[value="IT & Software"], .filter-options input[value="Marketing"], .filter-options input[value="Finance"], .filter-options input[value="Design"]'))
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
-    
     // Get selected employment types
     const selectedEmploymentTypes = Array.from(document.querySelectorAll('.filter-options input[value="Full-time"], .filter-options input[value="Part-time"], .filter-options input[value="Remote"], .filter-options input[value="Internship"]'))
         .filter(cb => cb.checked)
@@ -320,11 +316,6 @@ function applyFilters() {
             (job.employmentTypes && job.employmentTypes.some(type => type.toLowerCase().includes(searchTerm))) ||
             (job.skills && job.skills.some(skill => skill.toLowerCase().includes(searchTerm)))
         );
-    }
-    
-    // Apply category filter
-    if (selectedCategories.length > 0) {
-        filteredJobs = filteredJobs.filter(job => selectedCategories.includes(job.category));
     }
     
     // Apply employment type filter

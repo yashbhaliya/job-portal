@@ -257,7 +257,7 @@
 }
 
 .urgent-btn {
-    background: #ef4444;
+    background: #de5a5a;
     color: white;
 }
 
@@ -266,7 +266,7 @@
 }
 
 .featured-btn {
-    background: #f59e0b;
+    background: #deab52;
     color: white;
 }
 
@@ -275,7 +275,7 @@
 }
 
 .all-btn {
-    background: #6366f1;
+    background: #7879ce;
     color: white;
 }
 
@@ -313,7 +313,7 @@
 }
 
 .filter-group {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .filter-group h4 {
@@ -326,7 +326,7 @@
 .filter-options {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+   
 }
 
 .filter-options label {
@@ -413,7 +413,7 @@
 /* ===== GRID ===== */
 .jobs-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px;
 }
 
