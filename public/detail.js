@@ -59,7 +59,11 @@ async function loadJobDetails(id) {
         displayJobDetails(job);
     } catch (error) {
         console.error('Error loading job details:', error);
-        showError('Unable to connect to server. Please check your internet connection and try again.');
+        if (error.message === 'Failed to fetch') {
+            showError('Server is not running. Please start the server and try again.');
+        } else {
+            showError('Unable to connect to server. Please check your internet connection and try again.');
+        }
     }
 }
 

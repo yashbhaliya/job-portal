@@ -298,6 +298,14 @@
     transition: all 0.3s ease;
 }
 
+.all-btn {
+    background: #c1b8b8;
+    color: white;
+}
+
+.all-btn:hover {
+    background: #dc2626;
+}
 .urgent-btn {
     background: #ed7575;
     color: white;
@@ -425,6 +433,98 @@
 .main {
     padding: 60px 20px;
     background: #f5f7fb;
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    padding: 0 20px;
+}
+
+/* ===== FILTERS SIDEBAR ===== */
+.filters-sidebar {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.filters-sidebar h3 {
+    font-size: 22px;
+    color: #1f2937;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #6366f1;
+    padding-bottom: 15px;
+    font-weight: 700;
+}
+
+.filter-group {
+    margin-bottom: 30px;
+}
+
+.filter-group h4 {
+    font-size: 18px;
+    color: #374151;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-options label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    color: #4b5563;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.filter-options label:hover {
+    background: #f3f4f6;
+}
+
+.filter-options input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #6366f1;
+    cursor: pointer;
+}
+
+.clear-filters {
+    width: 100%;
+    padding: 12px 20px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.clear-filters:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+.jobs-content {
+    min-height: 500px;
 }
 
 .job-h2 {
@@ -817,6 +917,22 @@
         padding: 30px 15px;
     }
     
+    .content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 0 15px;
+    }
+    
+    .filters-sidebar {
+        order: 2;
+        padding: 25px 20px;
+        position: static;
+    }
+    
+    .jobs-content {
+        order: 1;
+    }
+    
     .jobs-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -824,5 +940,13 @@
     
     .job-card {
         padding: 20px 15px;
+    }
+
+    .filter-group {
+        margin-bottom: 20px;
+    }
+
+    .filter-options {
+        gap: 10px;
     }
 }

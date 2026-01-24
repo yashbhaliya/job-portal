@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>Job-Portal</title>
+    <title>Marketing Jobs - Job-Portal</title>
 </head>
-
 <body>
     <header class="main-header">
         <div class="nav-container">
@@ -17,10 +15,10 @@
             </div>
             
             <!-- Logo -->
-            <div class="logo" onclick="window.location.reload()" style="cursor: pointer;">
+            <a href="home.html" class="logo">
                 <img src="/img/job-portal-logo.jpg" alt="job-portal">
                 Job-Portal
-            </div>
+            </a>
 
             <!-- Navigation Menu -->
             <ul id="navMenu">
@@ -63,73 +61,17 @@
             </div>
         </div>
     </header>
-    
-    <section class="hero">
-        <div class="img">
-            <img src="/img/job-search.jpg" alt="">
-        </div>
-        <div class="hero-left">
-            <h1>Smarter Careers<br>Start in Tech</h1>
-            <p>
-                Smarter careers start in tech where innovation
-                meets opportunity. Find roles that grow with your
-                skills and ambition.
-            </p>
-        </div>
 
-        <div class="hero-right">
-            <div class="orbit"></div>
-
-            <div class="job-tag tag1">
-                <span class="icon purple">💉</span>
-                <div>
-                    <strong>Data Analyst</strong>
-                    <small>Nairobi</small>
-                </div>
-            </div>
-
-            <div class="job-tag tag2">
-                <span class="icon yellow">🛡️</span>
-                <div>
-                    <strong>QA Engineer</strong>
-                    <small>Basel</small>
-                </div>
-            </div>
-
-            <div class="job-tag tag3">
-                <span class="icon violet">✔</span>
-                <div>
-                    <strong>Cyber Security</strong>
-                    <small>Aiken</small>
-                </div>
-            </div>
-
-            <div class="job-tag tag4">
-                <span class="icon blue">🎓</span>
-                <div>
-                    <strong>UI / UX Designer</strong>
-                    <small>Vertigo</small>
-                </div>
-            </div>
+    <main class="category-jobs">
+        <div class="container">
+            <h1>Marketing Jobs</h1>
+            <p>Explore creative marketing opportunities and grow your career</p>
             
+            <div id="jobsContainer" class="jobs-grid">
+                <!-- Marketing jobs will be loaded here -->
+            </div>
         </div>
-    </section>
-
-    <section class="main">
-        <h2 class="job-h2">Most Popular Jobs</h2>
-        <p class="job-p">Know your worth and find the job that qualify your life</p>
-        
-        <div class="main-buttons">
-            <button class="main-btn all-btn">All</button>
-            <button class="main-btn urgent-btn">Urgent</button>
-            <button class="main-btn featured-btn">Featured</button>
-        </div>
-        
-        <div id="jobsContainer" class="jobs-grid">
-            <!-- Jobs will be loaded here -->
-        </div>
-    </section>
+    </main>
 </body>
 <script src="home.js"></script>
-
 </html>

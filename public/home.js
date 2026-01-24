@@ -186,4 +186,54 @@ function openJobDetails(jobId) {
 }
 
 // Load jobs when page loads
-document.addEventListener('DOMContentLoaded', loadJobs);
+document.addEventListener('DOMContentLoaded', function() {
+    loadJobs();
+    
+    // Add event listeners for filter buttons
+    const allBtn = document.querySelector('.all-btn');
+    const urgentBtn = document.querySelector('.urgent-btn');
+    const featuredBtn = document.querySelector('.featured-btn');
+    
+    if (allBtn) {
+        allBtn.addEventListener('click', () => filterJobs('all'));
+    }
+    
+    if (urgentBtn) {
+        urgentBtn.addEventListener('click', () => filterJobs('urgent'));
+    }
+    
+    if (featuredBtn) {
+        featuredBtn.addEventListener('click', () => filterJobs('featured'));
+    }
+    
+    // Add event listeners for navbar links
+    const navLinks = document.querySelectorAll('.nav-a');
+    navLinks.forEach(link => {
+        if (link.textContent.trim() === 'Urgent') {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                filterJobs('urgent');
+            });
+        } else if (link.textContent.trim() === 'Featured') {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                filterJobs('featured');
+            });
+        }
+    });
+});
+
+// Filter jobs by type
+function filterJobs(type) {
+    let filteredJobs;
+    
+    if (type === 'all') {
+        filteredJobs = allJobs;
+    } else if (type === 'urgent') {
+        filteredJobs = allJobs.filter(job => job.urgent === true);
+    } else if (type === 'featured') {
+        filteredJobs = allJobs.filter(job => job.featured === true);
+    }
+    
+    displayJobs(filteredJobs);
+}
