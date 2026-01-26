@@ -173,6 +173,20 @@ function displayJobDetails(job) {
         'Not specified';
     document.getElementById('employmentType').textContent = employmentType;
     
+    // Make employment type clickable
+    const employmentTypeElement = document.getElementById('employmentType');
+    if (job.employmentTypes && job.employmentTypes.length > 0) {
+        // Make each employment type clickable
+        const types = job.employmentTypes.map(type => {
+            const typeParam = getEmploymentTypeParam(type);
+            if (typeParam) {
+                return `<span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="window.location.href='http://127.0.0.1:5500/public/filter.html?type=${typeParam}'">${type}</span>`;
+            }
+            return type;
+        });
+        employmentTypeElement.innerHTML = types.join(', ');
+    }
+    
     document.getElementById('location').textContent = job.location || 'Not specified';
     document.getElementById('expiryDate').textContent = job.expiryDate || 'Not specified';
     
@@ -196,4 +210,23 @@ function getCategoryParam(category) {
         'Design': 'design'
     };
     return categoryMap[category] || 'it-software';
+}
+
+// Get employment type parameter for URL
+function getEmploymentTypeParam(employmentType) {
+    const typeMap = {
+        'Full-time': 'fulltime',
+        'Fulltime': 'fulltime',
+        'full-time': 'fulltime',
+        'fulltime': 'fulltime',
+        'Part-time': 'parttime',
+        'Parttime': 'parttime',
+        'part-time': 'parttime',
+        'parttime': 'parttime',
+        'Remote': 'remote',
+        'remote': 'remote',
+        'Internship': 'internship',
+        'internship': 'internship'
+    };
+    return typeMap[employmentType] || null;
 }

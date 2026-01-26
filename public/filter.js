@@ -77,12 +77,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     loadJobs();
     
-    // Get category from URL parameters
+    // Get parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
+    const type = urlParams.get('type');
     
     if (category) {
-        updatePageTitle(category);
+        updatePageTitle(category, null);
+    } else if (type) {
+        updatePageTitle(null, type);
     }
     
     // Add event listeners
@@ -99,16 +102,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function updatePageTitle(category) {
+function updatePageTitle(category, type) {
     const titleElement = document.getElementById('categoryTitle');
-    if (category === 'it-software' || category === 'it-softwate' || category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software') {
-        titleElement.textContent = 'IT & Software Jobs';
-    } else if (category === 'marketing') {
-        titleElement.textContent = 'Marketing Jobs';
-    } else if (category === 'finance') {
-        titleElement.textContent = 'Finance Jobs';
-    } else if (category === 'design') {
-        titleElement.textContent = 'Design Jobs';
+    if (category) {
+        if (category === 'it-software' || category === 'it-softwate' || category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software') {
+            titleElement.textContent = 'IT & Software Jobs';
+        } else if (category === 'marketing') {
+            titleElement.textContent = 'Marketing Jobs';
+        } else if (category === 'finance') {
+            titleElement.textContent = 'Finance Jobs';
+        } else if (category === 'design') {
+            titleElement.textContent = 'Design Jobs';
+        }
+    } else if (type) {
+        if (type === 'fulltime') {
+            titleElement.textContent = 'Full-time Jobs';
+        } else if (type === 'parttime') {
+            titleElement.textContent = 'Part-time Jobs';
+        } else if (type === 'remote') {
+            titleElement.textContent = 'Remote Jobs';
+        } else if (type === 'internship') {
+            titleElement.textContent = 'Internship Jobs';
+        }
     } else {
         titleElement.textContent = 'Filtered Jobs';
     }
@@ -124,13 +139,17 @@ async function loadJobs() {
         allJobs = await response.json();
         console.log('Loaded jobs:', allJobs.length, allJobs);
         
-        // Get category from URL and filter jobs
+        // Get parameters from URL
         const urlParams = new URLSearchParams(window.location.search);
         const category = urlParams.get('category');
-        console.log('URL category parameter:', category);
+        const type = urlParams.get('type');
         
         if (category) {
+            updatePageTitle(category, null);
             filterJobsByCategory(category);
+        } else if (type) {
+            updatePageTitle(null, type);
+            filterJobsByType(type);
         } else {
             displayJobs(allJobs);
         }
@@ -158,6 +177,48 @@ function filterJobsByCategory(category) {
     } else if (category === 'design') {
         filteredJobs = allJobs.filter(job => job.category === 'Design');
         console.log('Design jobs found:', filteredJobs.length);
+    }
+    
+    console.log('Final filtered jobs:', filteredJobs.length, filteredJobs);
+    displayJobs(filteredJobs);
+}
+
+function filterJobsByType(type) {
+    let filteredJobs = allJobs;
+    console.log('Filtering by type:', type);
+    console.log('All jobs before filtering:', allJobs.length);
+    
+    // Log all employment types in the database
+    allJobs.forEach((job, index) => {
+        console.log(`Job ${index + 1} employment types:`, job.employmentTypes);
+    });
+    
+    if (type === 'fulltime') {
+        filteredJobs = allJobs.filter(job => {
+            return job.employmentTypes && (
+                job.employmentTypes.includes('Full-time') ||
+                job.employmentTypes.includes('Fulltime') ||
+                job.employmentTypes.includes('full-time') ||
+                job.employmentTypes.includes('fulltime')
+            );
+        });
+        console.log('Full-time jobs found:', filteredJobs.length);
+    } else if (type === 'parttime') {
+        filteredJobs = allJobs.filter(job => {
+            return job.employmentTypes && (
+                job.employmentTypes.includes('Part-time') ||
+                job.employmentTypes.includes('Parttime') ||
+                job.employmentTypes.includes('part-time') ||
+                job.employmentTypes.includes('parttime')
+            );
+        });
+        console.log('Part-time jobs found:', filteredJobs.length);
+    } else if (type === 'remote') {
+        filteredJobs = allJobs.filter(job => job.employmentTypes && job.employmentTypes.includes('Remote'));
+        console.log('Remote jobs found:', filteredJobs.length);
+    } else if (type === 'internship') {
+        filteredJobs = allJobs.filter(job => job.employmentTypes && job.employmentTypes.includes('Internship'));
+        console.log('Internship jobs found:', filteredJobs.length);
     }
     
     console.log('Final filtered jobs:', filteredJobs.length, filteredJobs);
