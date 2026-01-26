@@ -1,180 +1,95 @@
-// Dropdown functionality
+let allJobs = [];
+
+
+// Load jobs when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
-    const menuToggle = document.querySelector(".menu-toggle");
-    const navMenu = document.getElementById("navMenu");
-    const closeMenu = document.querySelector(".close-menu");
-
-    if (menuToggle && navMenu) {
-        menuToggle.addEventListener("click", () => {
-            navMenu.classList.toggle("active");
-        });
-    }
-
-    if (closeMenu && navMenu) {
-        closeMenu.addEventListener("click", () => {
-            navMenu.classList.remove("active");
-            // Reset all dropdown states
-            const categoryItem = document.querySelector('.category');
-            const employmentItem = document.querySelector('.Employment-Type');
-            if (categoryItem) categoryItem.classList.remove('active');
-            if (employmentItem) employmentItem.classList.remove('active');
-        });
-    }
-
-    // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
-        if (navMenu && !e.target.closest('#navMenu') && !e.target.closest('.menu-toggle')) {
-            navMenu.classList.remove('active');
-            // Reset all dropdown states
-            const categoryItem = document.querySelector('.category');
-            const employmentItem = document.querySelector('.Employment-Type');
-            if (categoryItem) categoryItem.classList.remove('active');
-            if (employmentItem) employmentItem.classList.remove('active');
-        }
-    });
-
-    // Desktop dropdown functionality
-    const categoryItem = document.querySelector('.category');
-    const employmentItem = document.querySelector('.Employment-Type');
-    
-    // Mobile dropdown toggle
-    if (categoryItem) {
-        const categoryLink = categoryItem.querySelector('.nav-a');
-        if (categoryLink) {
-            categoryLink.addEventListener('click', function(e) {
-                if (window.innerWidth <= 900) {
-                    e.preventDefault();
-                    // Close other dropdown first
-                    if (employmentItem) employmentItem.classList.remove('active');
-                    categoryItem.classList.toggle('active');
-                }
-            });
-        }
-    }
-    
-    if (employmentItem) {
-        const employmentLink = employmentItem.querySelector('.nav-a');
-        if (employmentLink) {
-            employmentLink.addEventListener('click', function(e) {
-                if (window.innerWidth <= 900) {
-                    e.preventDefault();
-                    // Close other dropdown first
-                    if (categoryItem) categoryItem.classList.remove('active');
-                    employmentItem.classList.toggle('active');
-                }
-            });
-        }
-    }
-
-    // Search functionality
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.querySelector('.search-btn');
-    
-    function performSearch() {
-        const query = searchInput ? searchInput.value.trim() : '';
-        searchJobs(query);
-    }
-    
-    if (searchInput && searchBtn) {
-        searchBtn.addEventListener('click', performSearch);
-        
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-    }
-
-    // Load jobs when page loads
     loadJobs();
     
-    // Add event listeners for filter buttons
-    const allBtn = document.querySelector('.all-btn');
-    const urgentBtn = document.querySelector('.urgent-btn');
-    const featuredBtn = document.querySelector('.featured-btn');
+    // Get category from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
     
-    if (allBtn) {
-        allBtn.addEventListener('click', () => filterJobs('all'));
+    if (category) {
+        updatePageTitle(category);
     }
     
-    if (urgentBtn) {
-        urgentBtn.addEventListener('click', () => filterJobs('urgent'));
-    }
+    // Add event listeners
+    document.querySelector('.filter-search-btn').addEventListener('click', applyFilters);
+    document.querySelector('.clear-filters').addEventListener('click', clearAllFilters);
+    document.querySelector('.all-btn').addEventListener('click', () => showAllJobs());
+    document.querySelector('.urgent-btn').addEventListener('click', () => filterJobs('urgent'));
+    document.querySelector('.featured-btn').addEventListener('click', () => filterJobs('featured'));
     
-    if (featuredBtn) {
-        featuredBtn.addEventListener('click', () => filterJobs('featured'));
-    }
-    
-    // Add event listeners for navbar links
-    const navLinks = document.querySelectorAll('.nav-a');
-    navLinks.forEach(link => {
-        if (link.textContent.trim() === 'Urgent') {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                filterJobs('urgent');
-            });
-        } else if (link.textContent.trim() === 'Featured') {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                filterJobs('featured');
-            });
-        }
-    });
-
-    // Clear filters functionality
-    const clearFiltersBtn = document.querySelector('.clear-filters');
-    if (clearFiltersBtn) {
-        clearFiltersBtn.addEventListener('click', clearAllFilters);
-    }
-
-    // Filter search functionality
-    const filterSearchInput = document.getElementById('filterSearch');
-    const filterSearchBtn = document.querySelector('.filter-search-btn');
-    
-    if (filterSearchBtn) {
-        filterSearchBtn.addEventListener('click', applyFilters);
-    }
-    
-    if (filterSearchInput) {
-        filterSearchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                applyFilters();
-            }
-        });
-    }
-
-    // Add event listeners to all filter checkboxes
-    const filterCheckboxes = document.querySelectorAll('.filter-options input[type="checkbox"]');
-    filterCheckboxes.forEach(checkbox => {
+    // Add change listeners to checkboxes
+    const checkboxes = document.querySelectorAll('.filter-options input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', applyFilters);
     });
 });
 
-let allJobs = [];
+function updatePageTitle(category) {
+    const titleElement = document.getElementById('categoryTitle');
+    if (category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software') {
+        titleElement.textContent = 'IT & Software Jobs';
+    } else if (category === 'marketing') {
+        titleElement.textContent = 'Marketing Jobs';
+    } else if (category === 'finance') {
+        titleElement.textContent = 'Finance Jobs';
+    } else if (category === 'design') {
+        titleElement.textContent = 'Design Jobs';
+    } else {
+        titleElement.textContent = 'Filtered Jobs';
+    }
+}
 
-// Fetch and display jobs from MongoDB
 async function loadJobs() {
     try {
-        const response = await fetch('http://localhost:5000/jobs', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        
+        const response = await fetch('http://localhost:5000/jobs');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         allJobs = await response.json();
-        // Filter to show only IT & Software jobs
-        const itJobs = allJobs.filter(job => job.category === 'IT & Software');
-        displayJobs(itJobs);
+        console.log('Loaded jobs:', allJobs.length, allJobs);
+        
+        // Get category from URL and filter jobs
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        console.log('URL category parameter:', category);
+        
+        if (category) {
+            filterJobsByCategory(category);
+        } else {
+            displayJobs(allJobs);
+        }
     } catch (error) {
         console.error('Error loading jobs:', error);
         document.getElementById('jobsContainer').innerHTML = '<p>Unable to load jobs. Please make sure the server is running on port 5000.</p>';
     }
+}
+
+function filterJobsByCategory(category) {
+    let filteredJobs = allJobs;
+    console.log('Filtering by category:', category);
+    console.log('All jobs before filtering:', allJobs.length);
+    
+    // Handle different category formats
+    if (category === 'it&softwate' || category === 'it&softwate' || category === 'it & software' || category === 'it%20%26%20software') {
+        filteredJobs = allJobs.filter(job => job.category === 'IT & Software');
+        console.log('IT & Software jobs found:', filteredJobs.length);
+    } else if (category === 'marketing') {
+        filteredJobs = allJobs.filter(job => job.category === 'Marketing');
+        console.log('Marketing jobs found:', filteredJobs.length);
+    } else if (category === 'finance') {
+        filteredJobs = allJobs.filter(job => job.category === 'Finance');
+        console.log('Finance jobs found:', filteredJobs.length);
+    } else if (category === 'design') {
+        filteredJobs = allJobs.filter(job => job.category === 'Design');
+        console.log('Design jobs found:', filteredJobs.length);
+    }
+    
+    console.log('Final filtered jobs:', filteredJobs.length, filteredJobs);
+    displayJobs(filteredJobs);
 }
 
 function displayJobs(jobs) {
@@ -186,10 +101,10 @@ function displayJobs(jobs) {
     
     function getCategoryIcon(category) {
         const icons = {
-            'IT & Software': { class: 'it' },
-            'Marketing': { class: 'marketing' },
-            'Finance': { class: 'finance' },
-            'Design': { class: 'design' }
+            'IT & Software': { emoji: '💻', class: 'it' },
+            'Marketing': { emoji: '📈', class: 'marketing' },
+            'Finance': { emoji: '💰', class: 'finance' },
+            'Design': { emoji: '🎨', class: 'design' }
         };
         return icons[category] || { emoji: '💼', class: 'default' };
     }
@@ -225,32 +140,37 @@ function displayJobs(jobs) {
     }).join('');
 }
 
-function searchJobs(query) {
-    if (!query.trim()) {
-        const itJobs = allJobs.filter(job => job.category === 'IT & Software');
-        displayJobs(itJobs);
-        return;
+function showAllJobs() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    
+    if (category) {
+        filterJobsByCategory(category);
+    } else {
+        displayJobs(allJobs);
     }
-    
-    const filteredJobs = allJobs.filter(job => {
-        const searchText = query.toLowerCase();
-        return job.category === 'IT & Software' && (
-            job.title.toLowerCase().includes(searchText) ||
-            job.companyName.toLowerCase().includes(searchText) ||
-            job.location.toLowerCase().includes(searchText) ||
-            job.experience.toLowerCase().includes(searchText) ||
-            (job.employmentTypes && job.employmentTypes.some(type => type.toLowerCase().includes(searchText))) ||
-            (job.skills && job.skills.some(skill => skill.toLowerCase().includes(searchText)))
-        );
-    });
-    
-    displayJobs(filteredJobs);
 }
 
-// Filter jobs by type
 function filterJobs(type) {
-    let filteredJobs = allJobs.filter(job => job.category === 'IT & Software');
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
     
+    let filteredJobs = allJobs;
+    
+    // First filter by category if specified
+    if (category) {
+        if (category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software' || category === 'it%20%26%20software') {
+            filteredJobs = filteredJobs.filter(job => job.category === 'IT & Software');
+        } else if (category === 'marketing') {
+            filteredJobs = filteredJobs.filter(job => job.category === 'Marketing');
+        } else if (category === 'finance') {
+            filteredJobs = filteredJobs.filter(job => job.category === 'Finance');
+        } else if (category === 'design') {
+            filteredJobs = filteredJobs.filter(job => job.category === 'Design');
+        }
+    }
+    
+    // Then filter by type
     if (type === 'urgent') {
         filteredJobs = filteredJobs.filter(job => job.urgent === true);
     } else if (type === 'featured') {
@@ -260,32 +180,42 @@ function filterJobs(type) {
     displayJobs(filteredJobs);
 }
 
-// Function to open job details page
 function openJobDetails(jobId) {
     window.location.href = `detail.html?id=${jobId}`;
 }
 
-// Clear all filters
 function clearAllFilters() {
-    // Uncheck all checkboxes
     const checkboxes = document.querySelectorAll('.filter-options input[type="checkbox"]');
     checkboxes.forEach(checkbox => {
         checkbox.checked = false;
     });
     
-    // Clear search input
     const filterSearchInput = document.getElementById('filterSearch');
     if (filterSearchInput) {
         filterSearchInput.value = '';
     }
     
-    // Show all jobs
-    displayJobs(allJobs);
+    showAllJobs();
 }
 
-// Apply all filters
 function applyFilters() {
-    let filteredJobs = [...allJobs];
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    
+    let filteredJobs = allJobs;
+    
+    // First filter by category if specified
+    if (category) {
+        if (category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software' || category === 'it%20%26%20software') {
+            filteredJobs = filteredJobs.filter(job => job.category === 'IT & Software');
+        } else if (category === 'marketing') {
+            filteredJobs = filteredJobs.filter(job => job.category === 'Marketing');
+        } else if (category === 'finance') {
+            filteredJobs = filteredJobs.filter(job => job.category === 'Finance');
+        } else if (category === 'design') {
+            filteredJobs = filteredJobs.filter(job => job.category === 'Design');
+        }
+    }
     
     // Get search term
     const searchTerm = document.getElementById('filterSearch')?.value.toLowerCase().trim() || '';

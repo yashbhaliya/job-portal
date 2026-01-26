@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="marketing.css">
+    <link rel="stylesheet" href="filter.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>Marketing Jobs - Job-Portal</title>
+    <title>Filter Jobs - Job-Portal</title>
 </head>
 <body>
     <header class="main-header">
@@ -32,10 +32,10 @@
                         Category <i class="fa-solid fa-chevron-down"></i>
                     </a>
                     <div class="category-dropdown">
-                        <a href="it.html">IT & Software</a>
-                        <a href="marketing.html">Marketing</a>
-                        <a href="finance.html">Finance</a>
-                        <a href="design.html">Design</a>
+                        <a href="http://127.0.0.1:5500/public/filter.html?category=it&amp;softwate">IT & Software</a>
+                        <a href="http://127.0.0.1:5500/public/filter.html?category=marketing">Marketing</a>
+                        <a href="http://127.0.0.1:5500/public/filter.html?category=finance">Finance</a>
+                        <a href="http://127.0.0.1:5500/public/filter.html?category=design">Design</a>
                     </div>
                 </li>
 
@@ -63,8 +63,8 @@
     </header>
 
     <main class="main">
-        <h2 class="job-h2">Marketing Jobs</h2>
-        <p class="job-p">Explore creative marketing opportunities and grow your career</p>
+        <h2 class="job-h2" id="categoryTitle">Filtered Jobs</h2>
+        <p class="job-p">Find jobs based on your selected category</p>
         
         <div class="main-buttons">
             <button class="main-btn all-btn">All</button>
@@ -119,11 +119,11 @@
             
             <div class="jobs-content">
                 <div id="jobsContainer" class="jobs-grid">
-                    <!-- Marketing jobs will be loaded here -->
+                    <!-- Filtered jobs will be loaded here -->
                 </div>
             </div>
         </div>
     </main>
 </body>
-<script src="marketing.js"></script>
+<script src="filter.js"></script>
 </html>

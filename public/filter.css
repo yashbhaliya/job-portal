@@ -256,31 +256,37 @@
     transition: all 0.3s ease;
 }
 
-.urgent-btn {
-    background: #ef4444;
-    color: white;
-}
-
-.urgent-btn:hover {
-    background: #dc2626;
-}
-
-.featured-btn {
-    background: #f59e0b;
-    color: white;
-}
-
-.featured-btn:hover {
-    background: #d97706;
-}
-
 .all-btn {
-    background: #6366f1;
+   background: #0A223F;
     color: white;
 }
 
 .all-btn:hover {
-    background: #5b21b6;
+    background: white;
+    color: #0A223F;
+    border: 1px solid #0A223F;
+}
+
+.urgent-btn {
+   background: #0A223F;
+    color: white;
+}
+
+.urgent-btn:hover {
+     background: white;
+    color: #0A223F;
+    border: 1px solid #0A223F;
+}
+
+.featured-btn {
+    background: #0A223F;
+    color: white;
+}
+
+.featured-btn:hover {
+    background: white;
+    color: #0A223F;
+    border: 1px solid #0A223F;
 }
 
 .content-wrapper {
@@ -326,6 +332,7 @@
 .filter-options {
     display: flex;
     flex-direction: column;
+   
 }
 
 .filter-options label {
@@ -586,26 +593,91 @@
         left: 0;
     }
 
+    .nav-container ul li {
+        width: 100%;
+    }
+
+    .nav-container ul li a {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 16px;
+        color: white;
+    }
+
+    .category:hover .category-dropdown,
+    .Employment-Type:hover .Employment-Type-dropdown {
+        display: none !important;
+    }
+
+    .category-dropdown,
+    .Employment-Type-dropdown {
+        position: static;
+        width: 100%;
+        background: #122b52;
+        box-shadow: none;
+        border-radius: 10px;
+        margin-top: 8px;
+        display: none;
+        animation: none;
+    }
+
+    .category.active .category-dropdown,
+    .Employment-Type.active .Employment-Type-dropdown {
+        display: block !important;
+    }
+
+    .category-dropdown a,
+    .Employment-Type-dropdown a {
+        color: #e5e7eb;
+        margin-left: 0;
+        padding: 8px 16px;
+    }
+
     .close-menu {
         display: block;
-        margin-bottom: 10px;
+        color: white;
+        width: 100%;
+        margin-bottom: 12px;
     }
 
     .search {
         display: none;
     }
 
+    .main {
+        padding: 30px 15px;
+    }
+    
     .content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 0 15px;
+    }
+    
+    .filters-sidebar {
+        order: 2;
+        padding: 25px 20px;
+        position: static;
+    }
+    
+    .jobs-content {
+        order: 1;
+    }
+    
+    .jobs-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+    
+    .job-card {
+        padding: 20px 15px;
+    }
 
-    .filters-sidebar {
-        position: static;
+    .filter-group {
         margin-bottom: 20px;
     }
 
-    .jobs-grid {
-        grid-template-columns: 1fr;
+    .filter-options {
+        gap: 10px;
     }
 }
