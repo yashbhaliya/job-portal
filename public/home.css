@@ -712,13 +712,14 @@
     right: 50px;
     padding: 4px 8px;
     border-radius: 12px;
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 600;
 }
 
 .job-card .badge.urgent {
     /* background: #ef4444; */
     color: white;
+    
 }
 
 .job-card .badge.featured {

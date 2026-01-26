@@ -324,7 +324,7 @@
 .badge {
     padding: 8px 16px;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -338,10 +338,18 @@
     display: none;
 }
 
+.badge.urgent.show-urgent {
+    display: flex;
+}
+
 .badge.featured {
     background: #fffbeb;
     color: #d97706;
     display: none;
+}
+
+.badge.featured.show-featured {
+    display: flex;
 }
 
 .job-content {
@@ -427,8 +435,8 @@
 }
 
 .star-icon {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
     vertical-align: middle;
 }
 
