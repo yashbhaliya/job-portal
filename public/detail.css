@@ -291,7 +291,7 @@
 .company-info {
     display: flex;
     gap: 20px;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .company-logo {
@@ -312,6 +312,23 @@
     font-size: 16px;
     color: #6366f1;
     font-weight: 600;
+}
+
+.apply-btn {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s ease;
+}
+
+.apply-btn:hover {
+    background: #5b21b6;
 }
 
 .job-badges {
@@ -438,6 +455,26 @@
     width: 15px;
     height: 15px;
     vertical-align: middle;
+}
+
+.clickable-employment-type {
+    cursor: pointer;
+    color: #6366f1;
+    text-decoration: none;
+}
+
+.clickable-employment-type:hover {
+    color: #5b21b6;
+}
+
+.clickable-category {
+    cursor: pointer;
+    color: #6366f1;
+    text-decoration: none;
+}
+
+.clickable-category:hover {
+    color: #5b21b6;
 }
 
 /* MOBILE */

@@ -91,9 +91,46 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners
     document.querySelector('.filter-search-btn').addEventListener('click', applyFilters);
     document.querySelector('.clear-filters').addEventListener('click', clearAllFilters);
-    document.querySelector('.all-btn').addEventListener('click', () => showAllJobs());
-    document.querySelector('.urgent-btn').addEventListener('click', () => filterJobs('urgent'));
-    document.querySelector('.featured-btn').addEventListener('click', () => filterJobs('featured'));
+    
+    // Add Enter key functionality to search input
+    const filterSearchInput = document.getElementById('filterSearch');
+    if (filterSearchInput) {
+        filterSearchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                applyFilters();
+            }
+        });
+    }
+    
+    const allBtn = document.querySelector('.all-btn');
+    const urgentBtn = document.querySelector('.urgent-btn');
+    const featuredBtn = document.querySelector('.featured-btn');
+    
+    // Set "All" button as active by default
+    if (allBtn) {
+        allBtn.classList.add('active');
+    }
+    
+    if (allBtn) {
+        allBtn.addEventListener('click', () => {
+            setActiveButton(allBtn);
+            showAllJobs();
+        });
+    }
+    
+    if (urgentBtn) {
+        urgentBtn.addEventListener('click', () => {
+            setActiveButton(urgentBtn);
+            filterJobs('urgent');
+        });
+    }
+    
+    if (featuredBtn) {
+        featuredBtn.addEventListener('click', () => {
+            setActiveButton(featuredBtn);
+            filterJobs('featured');
+        });
+    }
     
     // Add change listeners to checkboxes
     const checkboxes = document.querySelectorAll('.filter-options input[type="checkbox"]');
@@ -400,9 +437,22 @@ function applyFilters() {
     
     // Apply employment type filter
     if (selectedEmploymentTypes.length > 0) {
-        filteredJobs = filteredJobs.filter(job => 
-            job.employmentTypes && job.employmentTypes.some(type => selectedEmploymentTypes.includes(type))
-        );
+        filteredJobs = filteredJobs.filter(job => {
+            if (!job.employmentTypes) return false;
+            
+            return selectedEmploymentTypes.some(selectedType => {
+                return job.employmentTypes.some(jobType => {
+                    // Normalize both strings for comparison
+                    const normalizedJobType = jobType.toLowerCase().replace(/[-\s]/g, '');
+                    const normalizedSelectedType = selectedType.toLowerCase().replace(/[-\s]/g, '');
+                    
+                    return normalizedJobType === normalizedSelectedType ||
+                           jobType === selectedType ||
+                           (selectedType === 'Full-time' && (jobType === 'Fulltime' || jobType === 'full-time' || jobType === 'fulltime')) ||
+                           (selectedType === 'Part-time' && (jobType === 'Parttime' || jobType === 'part-time' || jobType === 'parttime'));
+                });
+            });
+        });
     }
     
     // Apply salary range filter
@@ -434,7 +484,7 @@ function applyFilters() {
             return selectedExperience.some(exp => {
                 switch(exp) {
                     case 'freshman':
-                        return jobExp === 'freshman' || jobExp === 'fresher';
+                        return jobExp === 'freshman' || jobExp === 'fresher' || jobExp === 'intern' || jobExp === 'internship';
                     case 'junior':
                         return jobExp === 'junior' || (job.years && job.years >= 1 && job.years <= 3);
                     case 'mid':
@@ -449,4 +499,13 @@ function applyFilters() {
     }
     
     displayJobs(filteredJobs);
+}
+
+function setActiveButton(activeBtn) {
+    // Remove active class from all buttons
+    document.querySelectorAll('.main-btn').forEach(btn => btn.classList.remove('active'));
+    // Add active class to clicked button
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
 }

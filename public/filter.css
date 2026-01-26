@@ -261,7 +261,8 @@
     color: white;
 }
 
-.all-btn:hover {
+.all-btn:hover,
+.all-btn.active {
     background: white;
     color: #0A223F;
     border: 1px solid #0A223F;
@@ -272,7 +273,8 @@
     color: white;
 }
 
-.urgent-btn:hover {
+.urgent-btn:hover,
+.urgent-btn.active {
      background: white;
     color: #0A223F;
     border: 1px solid #0A223F;
@@ -283,7 +285,8 @@
     color: white;
 }
 
-.featured-btn:hover {
+.featured-btn:hover,
+.featured-btn.active {
     background: white;
     color: #0A223F;
     border: 1px solid #0A223F;

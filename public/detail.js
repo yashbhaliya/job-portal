@@ -152,8 +152,7 @@ function displayJobDetails(job) {
     
     // Make category clickable
     const categoryElement = document.getElementById('category');
-    categoryElement.style.cursor = 'pointer';
-    categoryElement.style.color = '#007bff';
+    categoryElement.className = 'clickable-category';
     categoryElement.onclick = function() {
         const categoryParam = getCategoryParam(job.category);
         window.location.href = `http://127.0.0.1:5500/public/filter.html?category=${categoryParam}`;
@@ -180,7 +179,7 @@ function displayJobDetails(job) {
         const types = job.employmentTypes.map(type => {
             const typeParam = getEmploymentTypeParam(type);
             if (typeParam) {
-                return `<span style="cursor: pointer; color: #007bff; text-decoration: underline;" onclick="window.location.href='http://127.0.0.1:5500/public/filter.html?type=${typeParam}'">${type}</span>`;
+                return `<span class="clickable-employment-type" onclick="window.location.href='http://127.0.0.1:5500/public/filter.html?type=${typeParam}'">${type}</span>`;
             }
             return type;
         });

@@ -225,21 +225,35 @@ function openJobDetails(jobId) {
 document.addEventListener('DOMContentLoaded', function() {
     loadJobs();
     
-    // Add event listeners for filter buttons
+    // Set "All" button as active by default
     const allBtn = document.querySelector('.all-btn');
+    if (allBtn) {
+        allBtn.classList.add('active');
+    }
+    
+    // Add event listeners for filter buttons
     const urgentBtn = document.querySelector('.urgent-btn');
     const featuredBtn = document.querySelector('.featured-btn');
     
     if (allBtn) {
-        allBtn.addEventListener('click', () => filterJobs('all'));
+        allBtn.addEventListener('click', () => {
+            setActiveButton(allBtn);
+            filterJobs('all');
+        });
     }
     
     if (urgentBtn) {
-        urgentBtn.addEventListener('click', () => filterJobs('urgent'));
+        urgentBtn.addEventListener('click', () => {
+            setActiveButton(urgentBtn);
+            filterJobs('urgent');
+        });
     }
     
     if (featuredBtn) {
-        featuredBtn.addEventListener('click', () => filterJobs('featured'));
+        featuredBtn.addEventListener('click', () => {
+            setActiveButton(featuredBtn);
+            filterJobs('featured');
+        });
     }
     
     // Add event listeners for navbar links
@@ -248,16 +262,27 @@ document.addEventListener('DOMContentLoaded', function() {
         if (link.textContent.trim() === 'Urgent') {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
+                setActiveButton(urgentBtn);
                 filterJobs('urgent');
             });
         } else if (link.textContent.trim() === 'Featured') {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
+                setActiveButton(featuredBtn);
                 filterJobs('featured');
             });
         }
     });
 });
+
+function setActiveButton(activeBtn) {
+    // Remove active class from all buttons
+    document.querySelectorAll('.main-btn').forEach(btn => btn.classList.remove('active'));
+    // Add active class to clicked button
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+}
 
 // Filter jobs by type
 function filterJobs(type) {
