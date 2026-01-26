@@ -1,8 +1,80 @@
 let allJobs = [];
 
+// Mobile menu functionality
+function initializeMobileMenu() {
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navMenu = document.getElementById("navMenu");
+    const closeMenu = document.querySelector(".close-menu");
+
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+        });
+    }
+
+    if (closeMenu && navMenu) {
+        closeMenu.addEventListener("click", () => {
+            navMenu.classList.remove("active");
+            // Reset all dropdown states
+            const categoryItem = document.querySelector('.category');
+            const employmentItem = document.querySelector('.Employment-Type');
+            if (categoryItem) categoryItem.classList.remove('active');
+            if (employmentItem) employmentItem.classList.remove('active');
+        });
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (navMenu && !e.target.closest('#navMenu') && !e.target.closest('.menu-toggle')) {
+            navMenu.classList.remove('active');
+            // Reset all dropdown states
+            const categoryItem = document.querySelector('.category');
+            const employmentItem = document.querySelector('.Employment-Type');
+            if (categoryItem) categoryItem.classList.remove('active');
+            if (employmentItem) employmentItem.classList.remove('active');
+        }
+    });
+
+    // Desktop dropdown functionality
+    const categoryItem = document.querySelector('.category');
+    const employmentItem = document.querySelector('.Employment-Type');
+    
+    // Mobile dropdown toggle
+    if (categoryItem) {
+        const categoryLink = categoryItem.querySelector('.nav-a');
+        if (categoryLink) {
+            categoryLink.addEventListener('click', function(e) {
+                if (window.innerWidth <= 900) {
+                    e.preventDefault();
+                    // Close other dropdown first
+                    if (employmentItem) employmentItem.classList.remove('active');
+                    categoryItem.classList.toggle('active');
+                }
+            });
+        }
+    }
+    
+    if (employmentItem) {
+        const employmentLink = employmentItem.querySelector('.nav-a');
+        if (employmentLink) {
+            employmentLink.addEventListener('click', function(e) {
+                if (window.innerWidth <= 900) {
+                    e.preventDefault();
+                    // Close other dropdown first
+                    if (categoryItem) categoryItem.classList.remove('active');
+                    employmentItem.classList.toggle('active');
+                }
+            });
+        }
+    }
+}
+
 
 // Load jobs when page loads
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize mobile menu
+    initializeMobileMenu();
+    
     loadJobs();
     
     // Get category from URL parameters
@@ -118,8 +190,8 @@ function displayJobs(jobs) {
         const employmentType = job.employmentTypes && job.employmentTypes.length > 0 ? job.employmentTypes.join(', ') : 'Not specified';
         
         return `
-            <div class="job-card" onclick="openJobDetails('${job._id}')" style="cursor: pointer;">
-                <div class="job-header">
+            <div class="job-card" style="cursor: pointer;">
+                <div class="job-header" onclick="openJobDetails('${job._id}')">
                     ${job.companyLogo ? `<img src="${job.companyLogo}" alt="${job.companyName}" class="company-logo">` : `<span class="job-icon ${icon.class}">${icon.emoji}</span>`}
                     <div class="title-section">
                         <h3>${job.title}</h3>
@@ -127,11 +199,11 @@ function displayJobs(jobs) {
                     </div>
                 </div>
                 <div class="job-info">
-                    <div class="category"><strong>Category:</strong> ${job.category}</div>
-                    <div class="salary"><strong>Salary:</strong> ${salary}</div>
-                    <div class="experience"><strong>Experience:</strong> ${fullExperience}</div>
-                    <div class="employment-type"><strong>Type:</strong> ${employmentType}</div>
-                    <div class="expiry-date"><strong>Expires:</strong> ${job.expiryDate || 'Not specified'}</div>
+                    <div class="category" onclick="openJobDetails('${job._id}')" style="cursor: pointer;"><strong>Category:</strong> ${job.category}</div>
+                    <div class="salary" onclick="openJobDetails('${job._id}')"><strong>Salary:</strong> ${salary}</div>
+                    <div class="experience" onclick="openJobDetails('${job._id}')"><strong>Experience:</strong> ${fullExperience}</div>
+                    <div class="employment-type" onclick="openJobDetails('${job._id}')"><strong>Type:</strong> ${employmentType}</div>
+                    <div class="expiry-date" onclick="openJobDetails('${job._id}')"><strong>Expires:</strong> ${job.expiryDate || 'Not specified'}</div>
                     ${job.urgent ? '<span class="badge urgent" title="Urgent">⭐</span>' : ''}
                     ${job.featured ? '<span class="badge featured" title="Featured">⚡</span>' : ''}
                 </div>
@@ -182,6 +254,23 @@ function filterJobs(type) {
 
 function openJobDetails(jobId) {
     window.location.href = `detail.html?id=${jobId}`;
+}
+
+function filterByCategory(category) {
+    let categoryParam;
+    if (category === 'IT & Software') {
+        categoryParam = 'it-software';
+    } else if (category === 'Marketing') {
+        categoryParam = 'marketing';
+    } else if (category === 'Finance') {
+        categoryParam = 'finance';
+    } else if (category === 'Design') {
+        categoryParam = 'design';
+    }
+    
+    if (categoryParam) {
+        window.location.href = `filter.html?category=${categoryParam}`;
+    }
 }
 
 function clearAllFilters() {

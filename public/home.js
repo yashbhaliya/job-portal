@@ -155,10 +155,10 @@ function displayJobs(jobs) {
     
     function getCategoryIcon(category) {
         const icons = {
-            'IT & Software': {  class: 'it' },
-            'Marketing': {  class: 'marketing' },
-            'Finance': {  class: 'finance' },
-            'Design': {  class: 'design' }
+            'IT & Software': { emoji: '💻', class: 'it' },
+            'Marketing': { emoji: '📈', class: 'marketing' },
+            'Finance': { emoji: '💰', class: 'finance' },
+            'Design': { emoji: '🎨', class: 'design' }
         };
         return icons[category] || { emoji: '💼', class: 'default' };
     }
