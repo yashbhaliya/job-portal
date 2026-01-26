@@ -196,7 +196,7 @@ function displayJobs(jobs) {
     
     container.innerHTML = jobs.map(job => {
         const icon = getCategoryIcon(job.category);
-        const salary = job.minSalary && job.maxSalary ? `$${job.minSalary} - $${job.maxSalary}` : 'Salary not specified';
+        const salary = job.minSalary && job.maxSalary ? `₹${job.minSalary} - ₹${job.maxSalary}` : 'Salary not specified';
         const experience = job.experience === 'freshman' ? 'Fresher' : job.experience || 'Not specified';
         const experienceYears = job.years ? ` (${job.years} years)` : '';
         const fullExperience = experience + experienceYears;

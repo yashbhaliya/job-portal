@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="marketing.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Marketing Jobs - Job-Portal</title>
 </head>
@@ -62,16 +62,68 @@
         </div>
     </header>
 
-    <main class="category-jobs">
-        <div class="container">
-            <h1>Marketing Jobs</h1>
-            <p>Explore creative marketing opportunities and grow your career</p>
+    <main class="main">
+        <h2 class="job-h2">Marketing Jobs</h2>
+        <p class="job-p">Explore creative marketing opportunities and grow your career</p>
+        
+        <div class="main-buttons">
+            <button class="main-btn all-btn">All</button>
+            <button class="main-btn urgent-btn">Urgent</button>
+            <button class="main-btn featured-btn">Featured</button>
+        </div>
+        
+        <div class="content-wrapper">
+            <aside class="filters-sidebar">
+                <h3>Filters</h3>
+                
+                <div class="filter-group">
+                    <h4>Search</h4>
+                    <div class="search-filter">
+                        <input type="text" id="filterSearch" placeholder="Search jobs...">
+                        <button class="filter-search-btn">Search</button>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h4>Employment Type</h4>
+                    <div class="filter-options">
+                        <label><input type="checkbox" value="Full-time"> Full-time</label>
+                        <label><input type="checkbox" value="Part-time"> Part-time</label>
+                        <label><input type="checkbox" value="Remote"> Remote</label>
+                        <label><input type="checkbox" value="Internship"> Internship</label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h4>Salary Range</h4>
+                    <div class="filter-options">
+                        <label><input type="checkbox" value="0-30000"> $0 - $30,000</label>
+                        <label><input type="checkbox" value="30000-60000"> $30,000 - $60,000</label>
+                        <label><input type="checkbox" value="60000-100000"> $60,000 - $100,000</label>
+                        <label><input type="checkbox" value="100000+"> $100,000+</label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h4>Experience Level</h4>
+                    <div class="filter-options">
+                        <label><input type="checkbox" value="freshman"> Fresher</label>
+                        <label><input type="checkbox" value="junior"> Junior (1-3 years)</label>
+                        <label><input type="checkbox" value="mid"> Mid-level (3-5 years)</label>
+                        <label><input type="checkbox" value="senior"> Senior (5+ years)</label>
+                    </div>
+                </div>
+                
+                <button class="clear-filters">Clear All Filters</button>
+            </aside>
             
-            <div id="jobsContainer" class="jobs-grid">
-                <!-- Marketing jobs will be loaded here -->
+            <div class="jobs-content">
+                <div id="jobsContainer" class="jobs-grid">
+                    <!-- Marketing jobs will be loaded here -->
+                </div>
             </div>
         </div>
     </main>
 </body>
-<script src="home.js"></script>
+<script src="marketing.js"></script>
 </html>
