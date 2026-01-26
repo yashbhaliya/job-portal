@@ -186,8 +186,8 @@ function displayJobs(jobs) {
                     <div class="experience"><strong>Experience:</strong> ${fullExperience}</div>
                     <div class="employment-type"><strong>Type:</strong> ${employmentType}</div>
                     <div class="expiry-date"><strong>Expires:</strong> ${job.expiryDate || 'Not specified'}</div>
-                    ${job.urgent ? '<span class="badge urgent" title="Urgent">⭐</span>' : ''}
-                    ${job.featured ? '<span class="badge featured" title="Featured">⚡</span>' : ''}
+                    ${job.urgent ? '<span class="badge urgent" title="Urgent"><img src="../img/star.png" alt="Urgent" class="star-icon"></span>' : ''}
+                    ${job.featured ? '<span class="badge featured" title="Featured"><img src="../img/flash.png" alt="Featured" class="star-icon"></span>' : ''}
                 </div>
             </div>
         `;

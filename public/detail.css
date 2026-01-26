@@ -317,6 +317,8 @@
 .job-badges {
     display: flex;
     gap: 10px;
+    align-items: center;
+    justify-content: center;
 }
 
 .badge {
@@ -324,16 +326,22 @@
     border-radius: 20px;
     font-size: 14px;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 .badge.urgent {
     background: #fef2f2;
     color: #dc2626;
+    display: none;
 }
 
 .badge.featured {
     background: #fffbeb;
     color: #d97706;
+    display: none;
 }
 
 .job-content {
@@ -416,6 +424,12 @@
     border-radius: 20px;
     font-size: 14px;
     font-weight: 500;
+}
+
+.star-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
 }
 
 /* MOBILE */

@@ -150,6 +150,15 @@ function displayJobDetails(job) {
     // Update job information
     document.getElementById('category').textContent = job.category || 'Not specified';
     
+    // Make category clickable
+    const categoryElement = document.getElementById('category');
+    categoryElement.style.cursor = 'pointer';
+    categoryElement.style.color = '#007bff';
+    categoryElement.onclick = function() {
+        const categoryParam = getCategoryParam(job.category);
+        window.location.href = `http://127.0.0.1:5500/public/filter.html?category=${categoryParam}`;
+    };
+    
     const salary = job.minSalary && job.maxSalary ? 
         `$${job.minSalary} - $${job.maxSalary}` : 
         'Salary not specified';
@@ -176,4 +185,15 @@ function displayJobDetails(job) {
     } else {
         skillsList.innerHTML = '<p>No specific skills listed.</p>';
     }
+}
+
+// Get category parameter for URL
+function getCategoryParam(category) {
+    const categoryMap = {
+        'IT & Software': 'it-software',
+        'Marketing': 'marketing',
+        'Finance': 'finance',
+        'Design': 'design'
+    };
+    return categoryMap[category] || 'it-software';
 }

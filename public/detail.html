@@ -32,10 +32,10 @@
                         Category <i class="fa-solid fa-chevron-down"></i>
                     </a>
                     <div class="category-dropdown">
-                        <a href="it.html">IT & Software</a>
-                        <a href="marketing.html">Marketing</a>
-                        <a href="finance.html">Finance</a>
-                        <a href="design.html">Design</a>
+                        <a href="filter.html?category=it-software">IT & Software</a>
+                        <a href="filter.html?category=marketing">Marketing</a>
+                        <a href="filter.html?category=finance">Finance</a>
+                        <a href="filter.html?category=design">Design</a>
                     </div>
                 </li>
 
@@ -82,8 +82,8 @@
                     </div>
                 </div>
                 <div class="job-badges">
-                    <span id="urgentBadge" class="badge urgent" style="display: none;">⭐ Urgent</span>
-                    <span id="featuredBadge" class="badge featured" style="display: none;">⚡ Featured</span>
+                    <span id="urgentBadge" class="badge urgent"><img src="../img/star.png" alt="Urgent" class="star-icon"> Urgent</span>
+                    <span id="featuredBadge" class="badge featured"><img src="../img/flash.png" alt="Featured" class="star-icon"> Featured</span>
                 </div>
             </div>
 
@@ -91,7 +91,7 @@
                 <div class="job-info">
                     <div class="info-item">
                         <strong>Category:</strong>
-                        <span id="category">-</span>
+                        <span id="category" class="clickable-category">-</span>
                     </div>
                     <div class="info-item">
                         <strong>Salary:</strong>
