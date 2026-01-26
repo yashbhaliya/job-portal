@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function updatePageTitle(category) {
     const titleElement = document.getElementById('categoryTitle');
-    if (category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software') {
+    if (category === 'it-software' || category === 'it-softwate' || category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software') {
         titleElement.textContent = 'IT & Software Jobs';
     } else if (category === 'marketing') {
         titleElement.textContent = 'Marketing Jobs';
@@ -74,7 +74,7 @@ function filterJobsByCategory(category) {
     console.log('All jobs before filtering:', allJobs.length);
     
     // Handle different category formats
-    if (category === 'it&softwate' || category === 'it&softwate' || category === 'it & software' || category === 'it%20%26%20software') {
+    if (category === 'it-software' || category === 'it-softwate' || category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software' || category === 'it%20%26%20software') {
         filteredJobs = allJobs.filter(job => job.category === 'IT & Software');
         console.log('IT & Software jobs found:', filteredJobs.length);
     } else if (category === 'marketing') {
@@ -159,7 +159,7 @@ function filterJobs(type) {
     
     // First filter by category if specified
     if (category) {
-        if (category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software' || category === 'it%20%26%20software') {
+        if (category === 'it-software' || category === 'it-softwate' || category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software' || category === 'it%20%26%20software') {
             filteredJobs = filteredJobs.filter(job => job.category === 'IT & Software');
         } else if (category === 'marketing') {
             filteredJobs = filteredJobs.filter(job => job.category === 'Marketing');
@@ -206,7 +206,7 @@ function applyFilters() {
     
     // First filter by category if specified
     if (category) {
-        if (category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software' || category === 'it%20%26%20software') {
+        if (category === 'it-software' || category === 'it-softwate' || category === 'it&softwate' || category === 'it&amp;softwate' || category === 'it & software' || category === 'it%20%26%20software') {
             filteredJobs = filteredJobs.filter(job => job.category === 'IT & Software');
         } else if (category === 'marketing') {
             filteredJobs = filteredJobs.filter(job => job.category === 'Marketing');
