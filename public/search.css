@@ -94,3 +94,11 @@
     color: #6366f1;
     font-weight: 600;
 }
+/* ===== LOGO UNDERLINE REMOVAL ===== */
+.logo {
+    text-decoration: none !important;
+}
+
+.logo:hover {
+    text-decoration: none !important;
+}

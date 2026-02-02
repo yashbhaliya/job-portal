@@ -42,6 +42,7 @@
     font-size: 20px;
     font-weight: 700;
     color: white;
+    text-decoration: none;
 }
 
 .logo img {
@@ -543,8 +544,8 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-top: 30px;
-    padding: 20px 0;
+    /* margin-top: 30px; */
+    padding: 10px 0;
 }
 
 .pagination button {
@@ -1168,4 +1169,30 @@
 
 .clear-filters-btn i {
     color: red;
+}
+/* ===== PAGINATION PAGE INFO ===== */
+.pagination .page-info {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.pagination-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+/* ===== PAGE INFO CONTAINER ===== */
+.page-info-container {
+    text-align: center;
+    margin: 20px 0 10px 0;
+}
+
+.page-info-display {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
 }

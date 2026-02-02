@@ -195,9 +195,21 @@ function setupPagination() {
     
     if (totalPages <= 1) {
         paginationContainer.innerHTML = '';
+        // Clear page info when no pagination needed
+        const pageInfoContainer = document.getElementById('pageInfo');
+        if (pageInfoContainer) pageInfoContainer.innerHTML = '';
         return;
     }
     
+    // Update page info in separate container
+    const startItem = (currentPage - 1) * jobsPerPage + 1;
+    const endItem = Math.min(currentPage * jobsPerPage, currentFilteredJobs.length);
+    const pageInfoContainer = document.getElementById('pageInfo');
+    if (pageInfoContainer) {
+        pageInfoContainer.innerHTML = `<div class="page-info-display">Showing ${startItem}-${endItem} of ${currentFilteredJobs.length} jobs</div>`;
+    }
+    
+    // Pagination buttons only
     let paginationHTML = '';
     
     // Previous button
@@ -214,11 +226,6 @@ function setupPagination() {
     
     // Next button
     paginationHTML += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
-    
-    // Page info
-    const startItem = (currentPage - 1) * jobsPerPage + 1;
-    const endItem = Math.min(currentPage * jobsPerPage, currentFilteredJobs.length);
-    paginationHTML += `<div class="page-info">Showing ${startItem}-${endItem} of ${currentFilteredJobs.length} jobs</div>`;
     
     paginationContainer.innerHTML = paginationHTML;
 }
