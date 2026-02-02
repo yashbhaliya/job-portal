@@ -86,6 +86,8 @@ jobForm.addEventListener('submit', async function (e) {
         jobData.companyLogo = newLogo;
     }
 
+    console.log('Submitting job data:', jobData);
+
     try {
         let url = 'http://localhost:5000/jobs';
         let method = 'POST';
@@ -95,18 +97,28 @@ jobForm.addEventListener('submit', async function (e) {
             method = 'PUT';
         }
 
+        console.log(`Making ${method} request to ${url}`);
+
         const res = await fetch(url, {
             method: method,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(jobData)
         });
 
+        console.log('Response status:', res.status);
+        const responseText = await res.text();
+        console.log('Response text:', responseText);
+
         if (res.ok) {
+            alert(editingJobId ? 'Job updated successfully!' : 'Job posted successfully!');
             await fetchJobs();
             closeJobModal();
+        } else {
+            alert(`Error: ${res.status} - ${responseText}`);
         }
     } catch (err) {
         console.error('Error saving job:', err);
+        alert('Network error: ' + err.message);
     }
 });
 
