@@ -339,7 +339,16 @@ function displayJobsPage() {
     const jobsToShow = currentFilteredJobs.slice(startIndex, endIndex);
     
     if (jobsToShow.length === 0 && currentFilteredJobs.length === 0) {
-        container.innerHTML = '<p>No jobs found matching your criteria</p>';
+        container.innerHTML = `
+            <div class="no-jobs-card">
+                <div class="no-jobs-content">
+                    <img src="/img/unemployment.png" alt="No Jobs" class="unemployment-img">
+                    <h3>Sorry, no jobs found</h3>
+                    <p>Clear filters to see jobs or explore jobs in other cities</p>
+                    <button class="clear-filters-btn" onclick="clearAllFilters()">Clear Filters <i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        `;
         return;
     }
     
@@ -621,11 +630,3 @@ function applyFilters() {
     displayJobs(filteredJobs);
 }
 
-function setActiveButton(activeBtn) {
-    // Remove active class from all buttons
-    document.querySelectorAll('.main-btn').forEach(btn => btn.classList.remove('active'));
-    // Add active class to clicked button
-    if (activeBtn) {
-        activeBtn.classList.add('active');
-    }
-}

@@ -89,22 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load jobs when page loads
     loadJobs();
     
-    // Add event listeners for filter buttons
-    const allBtn = document.querySelector('.all-btn');
-    const urgentBtn = document.querySelector('.urgent-btn');
-    const featuredBtn = document.querySelector('.featured-btn');
-    
-    if (allBtn) {
-        allBtn.addEventListener('click', () => filterJobs('all'));
-    }
-    
-    if (urgentBtn) {
-        urgentBtn.addEventListener('click', () => filterJobs('urgent'));
-    }
-    
-    if (featuredBtn) {
-        featuredBtn.addEventListener('click', () => filterJobs('featured'));
-    }
+
 
 });
 let allJobs = [];
@@ -148,7 +133,16 @@ function displayJobsPage() {
     const jobsToShow = currentFilteredJobs.slice(startIndex, endIndex);
     
     if (jobsToShow.length === 0 && currentFilteredJobs.length === 0) {
-        container.innerHTML = '<p>No jobs available</p>';
+        container.innerHTML = `
+            <div class="no-jobs-card">
+                <div class="no-jobs-content">
+                    <img src="/img/unemployment.png" alt="No Jobs" class="unemployment-img">
+                    <h3>Sorry, no jobs found</h3>
+                    <p>Clear filters to see jobs or explore jobs in other cities</p>
+                    <button class="clear-filters-btn" onclick="window.location.reload()">Clear Filters <i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        `;
         return;
     }
     
@@ -280,60 +274,6 @@ document.addEventListener('DOMContentLoaded', function() {
             searchJobs(searchQuery);
         }
     }
-    
-    // Set "All" button as active by default
-    const allBtn = document.querySelector('.all-btn');
-    if (allBtn) {
-        allBtn.classList.add('active');
-    }
-    
-    // Add event listeners for filter buttons
-    const urgentBtn = document.querySelector('.urgent-btn');
-    const featuredBtn = document.querySelector('.featured-btn');
-    
-    if (allBtn) {
-        allBtn.addEventListener('click', () => {
-            setActiveButton(allBtn);
-            filterJobs('all');
-        });
-    }
-    
-    if (urgentBtn) {
-        urgentBtn.addEventListener('click', () => {
-            setActiveButton(urgentBtn);
-            filterJobs('urgent');
-        });
-    }
-    
-    if (featuredBtn) {
-        featuredBtn.addEventListener('click', () => {
-            setActiveButton(featuredBtn);
-            filterJobs('featured');
-        });
-    }
 
 });
 
-function setActiveButton(activeBtn) {
-    // Remove active class from all buttons
-    document.querySelectorAll('.main-btn').forEach(btn => btn.classList.remove('active'));
-    // Add active class to clicked button
-    if (activeBtn) {
-        activeBtn.classList.add('active');
-    }
-}
-
-// Filter jobs by type
-function filterJobs(type) {
-    let filteredJobs;
-    
-    if (type === 'all') {
-        filteredJobs = allJobs;
-    } else if (type === 'urgent') {
-        filteredJobs = allJobs.filter(job => job.urgent === true);
-    } else if (type === 'featured') {
-        filteredJobs = allJobs.filter(job => job.featured === true);
-    }
-    
-    displayJobs(filteredJobs);
-}

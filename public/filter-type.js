@@ -122,35 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    const allBtn = document.querySelector('.all-btn');
-    const urgentBtn = document.querySelector('.urgent-btn');
-    const featuredBtn = document.querySelector('.featured-btn');
-    
-    // Set "All" button as active by default
-    if (allBtn) {
-        allBtn.classList.add('active');
-    }
-    
-    if (allBtn) {
-        allBtn.addEventListener('click', () => {
-            // Always redirect to home page from type pages
-            window.location.href = 'home.html';
-        });
-    }
-    
-    if (urgentBtn) {
-        urgentBtn.addEventListener('click', () => {
-            setActiveButton(urgentBtn);
-            filterJobs('urgent');
-        });
-    }
-    
-    if (featuredBtn) {
-        featuredBtn.addEventListener('click', () => {
-            setActiveButton(featuredBtn);
-            filterJobs('featured');
-        });
-    }
+
     
     // Add change listeners to checkboxes
     const checkboxes = document.querySelectorAll('.filter-options input[type="checkbox"]');
@@ -251,7 +223,16 @@ function displayJobsPage() {
     const jobsToShow = currentFilteredJobs.slice(startIndex, endIndex);
     
     if (jobsToShow.length === 0 && currentFilteredJobs.length === 0) {
-        container.innerHTML = '<p>No jobs found matching your criteria</p>';
+        container.innerHTML = `
+            <div class="no-jobs-card">
+                <div class="no-jobs-content">
+                    <img src="/img/unemployment.png" alt="No Jobs" class="unemployment-img">
+                    <h3>Sorry, no jobs found</h3>
+                    <p>Clear filters to see jobs or explore jobs in other cities</p>
+                    <button class="clear-filters-btn" onclick="clearAllFilters()">Clear Filters <i class="fas fa-times"></i></button>
+                </div>
+            </div>
+        `;
         return;
     }
     
@@ -531,11 +512,3 @@ function applyFilters() {
     displayJobs(filteredJobs);
 }
 
-function setActiveButton(activeBtn) {
-    // Remove active class from all buttons
-    document.querySelectorAll('.main-btn').forEach(btn => btn.classList.remove('active'));
-    // Add active class to clicked button
-    if (activeBtn) {
-        activeBtn.classList.add('active');
-    }
-}
