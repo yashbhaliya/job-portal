@@ -105,22 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (featuredBtn) {
         featuredBtn.addEventListener('click', () => filterJobs('featured'));
     }
-    
-    // Add event listeners for navbar links
-    const navLinks = document.querySelectorAll('.nav-a');
-    navLinks.forEach(link => {
-        if (link.textContent.trim() === 'Urgent') {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                filterJobs('urgent');
-            });
-        } else if (link.textContent.trim() === 'Featured') {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                filterJobs('featured');
-            });
-        }
-    });
+
 });
 let allJobs = [];
 
@@ -255,24 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
             filterJobs('featured');
         });
     }
-    
-    // Add event listeners for navbar links
-    const navLinks = document.querySelectorAll('.nav-a');
-    navLinks.forEach(link => {
-        if (link.textContent.trim() === 'Urgent') {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                setActiveButton(urgentBtn);
-                filterJobs('urgent');
-            });
-        } else if (link.textContent.trim() === 'Featured') {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                setActiveButton(featuredBtn);
-                filterJobs('featured');
-            });
-        }
-    });
+
 });
 
 function setActiveButton(activeBtn) {

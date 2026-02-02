@@ -125,15 +125,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (allBtn) {
         allBtn.addEventListener('click', () => {
-            // If on urgent or featured page, go to home page
-            const urlParams = new URLSearchParams(window.location.search);
-            const filter = urlParams.get('filter');
-            if (filter === 'urgent' || filter === 'featured') {
-                window.location.href = 'home.html';
-            } else {
-                setActiveButton(allBtn);
-                showAllJobs();
-            }
+            // Always redirect to home page from category pages
+            window.location.href = 'home.html';
         });
     }
     
