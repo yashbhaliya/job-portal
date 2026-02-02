@@ -124,7 +124,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function performHeaderSearch() {
         const query = headerSearchInput ? headerSearchInput.value.trim() : '';
         if (query) {
-            window.location.href = `home.html?search=${encodeURIComponent(query)}`;
+            searchJobs(query);
+        } else {
+            displayJobs(allJobs);
         }
     }
     
@@ -630,3 +632,24 @@ function applyFilters() {
     displayJobs(filteredJobs);
 }
 
+function searchJobs(query) {
+    if (!query.trim()) {
+        showAllJobs();
+        return;
+    }
+    
+    const filteredJobs = allJobs.filter(job => {
+        const searchText = query.toLowerCase();
+        return (
+            job.title.toLowerCase().includes(searchText) ||
+            job.companyName.toLowerCase().includes(searchText) ||
+            job.category.toLowerCase().includes(searchText) ||
+            job.location?.toLowerCase().includes(searchText) ||
+            job.experience?.toLowerCase().includes(searchText) ||
+            (job.employmentTypes && job.employmentTypes.some(type => type.toLowerCase().includes(searchText))) ||
+            (job.skills && job.skills.some(skill => skill.toLowerCase().includes(searchText)))
+        );
+    });
+    
+    displayJobs(filteredJobs);
+}

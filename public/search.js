@@ -1,6 +1,10 @@
-// Dropdown functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
+let allJobs = [];
+let currentPage = 1;
+const jobsPerPage = 8;
+let currentFilteredJobs = [];
+
+// Mobile menu functionality
+function initializeMobileMenu() {
     const menuToggle = document.querySelector(".menu-toggle");
     const navMenu = document.getElementById("navMenu");
     const closeMenu = document.querySelector(".close-menu");
@@ -14,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (closeMenu && navMenu) {
         closeMenu.addEventListener("click", () => {
             navMenu.classList.remove("active");
-            // Reset all dropdown states
             const categoryItem = document.querySelector('.category');
             const employmentItem = document.querySelector('.Employment-Type');
             if (categoryItem) categoryItem.classList.remove('active');
@@ -22,11 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Close menu when clicking outside
     document.addEventListener('click', function(e) {
         if (navMenu && !e.target.closest('#navMenu') && !e.target.closest('.menu-toggle')) {
             navMenu.classList.remove('active');
-            // Reset all dropdown states
             const categoryItem = document.querySelector('.category');
             const employmentItem = document.querySelector('.Employment-Type');
             if (categoryItem) categoryItem.classList.remove('active');
@@ -34,18 +35,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Desktop dropdown functionality
     const categoryItem = document.querySelector('.category');
     const employmentItem = document.querySelector('.Employment-Type');
     
-    // Mobile dropdown toggle
     if (categoryItem) {
         const categoryLink = categoryItem.querySelector('.nav-a');
         if (categoryLink) {
             categoryLink.addEventListener('click', function(e) {
                 if (window.innerWidth <= 900) {
                     e.preventDefault();
-                    // Close other dropdown first
                     if (employmentItem) employmentItem.classList.remove('active');
                     categoryItem.classList.toggle('active');
                 }
@@ -59,66 +57,129 @@ document.addEventListener('DOMContentLoaded', function() {
             employmentLink.addEventListener('click', function(e) {
                 if (window.innerWidth <= 900) {
                     e.preventDefault();
-                    // Close other dropdown first
                     if (categoryItem) categoryItem.classList.remove('active');
                     employmentItem.classList.toggle('active');
                 }
             });
         }
     }
+}
 
-    // Search functionality - unified across all pages
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.querySelector('.search-btn');
+document.addEventListener('DOMContentLoaded', function() {
+    initializeMobileMenu();
+    loadJobs();
+    
+    const mainSearchInput = document.getElementById('mainSearchInput');
+    const mainSearchBtn = document.querySelector('.main-search-btn');
+    const headerSearchInput = document.getElementById('searchInput');
+    const headerSearchBtn = document.querySelector('.search-btn');
     
     function performSearch() {
-        const query = searchInput ? searchInput.value.trim() : '';
+        const mainQuery = mainSearchInput ? mainSearchInput.value.trim() : '';
+        const headerQuery = headerSearchInput ? headerSearchInput.value.trim() : '';
+        const query = mainQuery || headerQuery;
+        
         if (query) {
-            window.location.href = `search.html?search=${encodeURIComponent(query)}`;
+            // Update both search inputs
+            if (mainSearchInput) mainSearchInput.value = query;
+            if (headerSearchInput) headerSearchInput.value = query;
+            searchJobs(query);
+        } else {
+            displayJobs(allJobs);
         }
     }
     
-    if (searchInput && searchBtn) {
-        searchBtn.addEventListener('click', performSearch);
-        
-        searchInput.addEventListener('keypress', function(e) {
+    if (mainSearchBtn) {
+        mainSearchBtn.addEventListener('click', performSearch);
+    }
+    
+    if (mainSearchInput) {
+        mainSearchInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 performSearch();
             }
         });
     }
-
-    // Load jobs when page loads
-    loadJobs();
     
-
-
-});
-let allJobs = [];
-let currentPage = 1;
-const jobsPerPage = 8;
-let currentFilteredJobs = [];
-
-// Fetch and display jobs from MongoDB
-async function loadJobs() {
-    try {
-        const response = await fetch('http://localhost:5000/jobs', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
+    if (headerSearchBtn) {
+        headerSearchBtn.addEventListener('click', performSearch);
+    }
+    
+    if (headerSearchInput) {
+        headerSearchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
             }
         });
-        
+    }
+    
+    // Check for search parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
+    if (searchQuery) {
+        if (mainSearchInput) mainSearchInput.value = searchQuery;
+        if (headerSearchInput) headerSearchInput.value = searchQuery;
+        searchJobs(searchQuery);
+    }
+});
+
+async function loadJobs() {
+    try {
+        const response = await fetch('http://localhost:5000/jobs');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         allJobs = await response.json();
-        displayJobs(allJobs);
+        
+        // Check for search parameter in URL after loading jobs
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get('search');
+        if (searchQuery) {
+            const mainSearchInput = document.getElementById('mainSearchInput');
+            const headerSearchInput = document.getElementById('searchInput');
+            if (mainSearchInput) mainSearchInput.value = searchQuery;
+            if (headerSearchInput) headerSearchInput.value = searchQuery;
+            searchJobs(searchQuery);
+        } else {
+            displayJobs(allJobs);
+        }
     } catch (error) {
         console.error('Error loading jobs:', error);
         document.getElementById('jobsContainer').innerHTML = '<p>Unable to load jobs. Please make sure the server is running on port 5000.</p>';
     }
+}
+
+function searchJobs(query) {
+    const searchKeywordDiv = document.getElementById('searchKeyword');
+    const keywordText = document.getElementById('keywordText');
+    
+    if (!query.trim()) {
+        if (searchKeywordDiv) searchKeywordDiv.style.display = 'none';
+        displayJobs(allJobs);
+        return;
+    }
+    
+    // Show search keyword
+    if (searchKeywordDiv && keywordText) {
+        keywordText.textContent = query;
+        searchKeywordDiv.style.display = 'block';
+    }
+    
+    const filteredJobs = allJobs.filter(job => {
+        const searchText = query.toLowerCase();
+        return (
+            job.title.toLowerCase().includes(searchText) ||
+            job.companyName.toLowerCase().includes(searchText) ||
+            job.category.toLowerCase().includes(searchText) ||
+            job.location?.toLowerCase().includes(searchText) ||
+            job.experience?.toLowerCase().includes(searchText) ||
+            (job.employmentTypes && job.employmentTypes.some(type => type.toLowerCase().includes(searchText))) ||
+            (job.skills && job.skills.some(skill => skill.toLowerCase().includes(searchText)))
+        );
+    });
+    
+    displayJobs(filteredJobs);
 }
 
 function displayJobs(jobs) {
@@ -139,9 +200,9 @@ function displayJobsPage() {
             <div class="no-jobs-card">
                 <div class="no-jobs-content">
                     <img src="/img/unemployment.png" alt="No Jobs" class="unemployment-img">
-                    <h3>Sorry, no jobs found</h3>
-                    <p>Clear filters to see jobs or explore jobs in other cities</p>
-                    <button class="clear-filters-btn" onclick="window.location.reload()">Clear Filters <i class="fas fa-times"></i></button>
+                    <h3>No jobs found</h3>
+                    <p>Try different keywords or browse all jobs</p>
+                    <button class="clear-filters-btn" onclick="window.location.href='home.html'">Browse All Jobs</button>
                 </div>
             </div>
         `;
@@ -200,10 +261,8 @@ function setupPagination() {
     
     let paginationHTML = '';
     
-    // Previous button
     paginationHTML += `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
     
-    // Page numbers
     for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
             paginationHTML += `<button onclick="changePage(${i})" ${i === currentPage ? 'class="active"' : ''}>${i}</button>`;
@@ -212,10 +271,8 @@ function setupPagination() {
         }
     }
     
-    // Next button
     paginationHTML += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
     
-    // Page info
     const startItem = (currentPage - 1) * jobsPerPage + 1;
     const endItem = Math.min(currentPage * jobsPerPage, currentFilteredJobs.length);
     paginationHTML += `<div class="page-info">Showing ${startItem}-${endItem} of ${currentFilteredJobs.length} jobs</div>`;
@@ -231,51 +288,9 @@ function changePage(page) {
     displayJobsPage();
     setupPagination();
     
-    // Scroll to top of jobs container
     document.getElementById('jobsContainer').scrollIntoView({ behavior: 'smooth' });
 }
 
-function searchJobs(query) {
-    if (!query.trim()) {
-        displayJobs(allJobs);
-        return;
-    }
-    
-    const filteredJobs = allJobs.filter(job => {
-        const searchText = query.toLowerCase();
-        return (
-            job.title.toLowerCase().includes(searchText) ||
-            job.companyName.toLowerCase().includes(searchText) ||
-            job.category.toLowerCase().includes(searchText) ||
-            job.location.toLowerCase().includes(searchText) ||
-            job.experience.toLowerCase().includes(searchText) ||
-            (job.employmentTypes && job.employmentTypes.some(type => type.toLowerCase().includes(searchText))) ||
-            (job.skills && job.skills.some(skill => skill.toLowerCase().includes(searchText)))
-        );
-    });
-    
-    displayJobs(filteredJobs);
-}
-
-// Function to open job details page
 function openJobDetails(jobId) {
     window.location.href = `detail.html?id=${jobId}`;
 }
-
-// Load jobs when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    loadJobs();
-    
-    // Check for search parameter in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get('search');
-    if (searchQuery) {
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.value = searchQuery;
-            searchJobs(searchQuery);
-        }
-    }
-
-});
-
