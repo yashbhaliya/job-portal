@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Search functionality
+    // Search functionality - unified across all pages
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.querySelector('.search-btn');
     
@@ -209,6 +209,17 @@ function openJobDetails(jobId) {
 // Load jobs when page loads
 document.addEventListener('DOMContentLoaded', function() {
     loadJobs();
+    
+    // Check for search parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
+    if (searchQuery) {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.value = searchQuery;
+            searchJobs(searchQuery);
+        }
+    }
     
     // Set "All" button as active by default
     const allBtn = document.querySelector('.all-btn');

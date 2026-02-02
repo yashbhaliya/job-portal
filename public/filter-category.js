@@ -104,12 +104,33 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.filter-search-btn').addEventListener('click', applyFilters);
     document.querySelector('.clear-filters').addEventListener('click', clearAllFilters);
     
-    // Add Enter key functionality to search input
+    // Add Enter key functionality to sidebar search input
     const filterSearchInput = document.getElementById('filterSearch');
     if (filterSearchInput) {
         filterSearchInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 applyFilters();
+            }
+        });
+    }
+    
+    // Search functionality - unified across all pages
+    const headerSearchInput = document.getElementById('searchInput');
+    const headerSearchBtn = document.querySelector('.search-btn');
+    
+    function performHeaderSearch() {
+        const query = headerSearchInput ? headerSearchInput.value.trim() : '';
+        if (query) {
+            window.location.href = `home.html?search=${encodeURIComponent(query)}`;
+        }
+    }
+    
+    if (headerSearchInput && headerSearchBtn) {
+        headerSearchBtn.addEventListener('click', performHeaderSearch);
+        
+        headerSearchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performHeaderSearch();
             }
         });
     }
