@@ -1,5 +1,5 @@
 // Dropdown functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Mobile menu toggle
     const menuToggle = document.querySelector(".menu-toggle");
     const navMenu = document.getElementById("navMenu");
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (navMenu && !e.target.closest('#navMenu') && !e.target.closest('.menu-toggle')) {
             navMenu.classList.remove('active');
             // Reset all dropdown states
@@ -37,12 +37,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Desktop dropdown functionality
     const categoryItem = document.querySelector('.category');
     const employmentItem = document.querySelector('.Employment-Type');
-    
+
     // Mobile dropdown toggle
     if (categoryItem) {
         const categoryLink = categoryItem.querySelector('.nav-a');
         if (categoryLink) {
-            categoryLink.addEventListener('click', function(e) {
+            categoryLink.addEventListener('click', function (e) {
                 if (window.innerWidth <= 900) {
                     e.preventDefault();
                     // Close other dropdown first
@@ -52,11 +52,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-    
+
     if (employmentItem) {
         const employmentLink = employmentItem.querySelector('.nav-a');
         if (employmentLink) {
-            employmentLink.addEventListener('click', function(e) {
+            employmentLink.addEventListener('click', function (e) {
                 if (window.innerWidth <= 900) {
                     e.preventDefault();
                     // Close other dropdown first
@@ -70,18 +70,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Search functionality - unified across all pages
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.querySelector('.search-btn');
-    
+
     function performSearch() {
         const query = searchInput ? searchInput.value.trim() : '';
         if (query) {
             window.location.href = `search.html?search=${encodeURIComponent(query)}`;
         }
     }
-    
+
     if (searchInput && searchBtn) {
         searchBtn.addEventListener('click', performSearch);
-        
-        searchInput.addEventListener('keypress', function(e) {
+
+        searchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 performSearch();
             }
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load jobs when page loads
     loadJobs();
-    
+
 
 
 });
@@ -108,11 +108,11 @@ async function loadJobs() {
                 'Content-Type': 'application/json'
             }
         });
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         allJobs = await response.json();
         displayJobs(allJobs);
     } catch (error) {
@@ -133,7 +133,7 @@ function displayJobsPage() {
     const startIndex = (currentPage - 1) * jobsPerPage;
     const endIndex = startIndex + jobsPerPage;
     const jobsToShow = currentFilteredJobs.slice(startIndex, endIndex);
-    
+
     if (jobsToShow.length === 0 && currentFilteredJobs.length === 0) {
         container.innerHTML = `
             <div class="no-jobs-card">
@@ -147,7 +147,7 @@ function displayJobsPage() {
         `;
         return;
     }
-    
+
     function getCategoryIcon(category) {
         const icons = {
             'IT & Software': { emoji: '💻', class: 'it' },
@@ -157,7 +157,7 @@ function displayJobsPage() {
         };
         return icons[category] || { emoji: '💼', class: 'default' };
     }
-    
+
     container.innerHTML = jobsToShow.map(job => {
         const icon = getCategoryIcon(job.category);
         const salary = job.minSalary && job.maxSalary ? `₹${job.minSalary} - ₹${job.maxSalary}` : 'Salary not specified';
@@ -165,7 +165,7 @@ function displayJobsPage() {
         const experienceYears = job.years ? ` (${job.years} years)` : '';
         const fullExperience = experience + experienceYears;
         const employmentType = job.employmentTypes && job.employmentTypes.length > 0 ? job.employmentTypes.join(', ') : 'Not specified';
-        
+
         return `
             <div class="job-card" onclick="openJobDetails('${job._id}')" style="cursor: pointer;">
                 <div class="job-header">
@@ -177,9 +177,9 @@ function displayJobsPage() {
                 </div>
                 <div class="job-info">
                     <div class="category"><strong>Category:</strong> ${job.category}</div>
-                    <div class="salary"><strong>Salary:</strong> ${salary}</div>
-                    <div class="experience"><strong>Experience:</strong> ${fullExperience}</div>
+                    <div class="experience"><i class="fa fa-briefcase"></i> <strong><img src="/img/save-money.png" alt="Urgent" class="star-icon"></strong> ${fullExperience}</div>
                     <div class="employment-type"><strong>Type:</strong> ${employmentType}</div>
+                    <div class="salary"><i class="fa fa-money-bill"></i> <strong>Salary:</strong> ${salary}</div>
                     <div class="expiry-date"><strong>Expires:</strong> ${job.expiryDate || 'Not specified'}</div>
                     ${job.urgent ? '<span class="badge urgent" title="Urgent"><img src="/img/urgent.png" alt="Urgent" class="star-icon"></span>' : ''}
                     ${job.featured ? '<span class="badge featured" title="Featured"><img src="/img/features.png" alt="Featured" class="star-icon"></span>' : ''}
@@ -192,7 +192,7 @@ function displayJobsPage() {
 function setupPagination() {
     const totalPages = Math.ceil(currentFilteredJobs.length / jobsPerPage);
     const paginationContainer = document.getElementById('pagination');
-    
+
     if (totalPages <= 1) {
         paginationContainer.innerHTML = '';
         // Clear page info when no pagination needed
@@ -200,7 +200,7 @@ function setupPagination() {
         if (pageInfoContainer) pageInfoContainer.innerHTML = '';
         return;
     }
-    
+
     // Update page info in separate container
     const startItem = (currentPage - 1) * jobsPerPage + 1;
     const endItem = Math.min(currentPage * jobsPerPage, currentFilteredJobs.length);
@@ -208,13 +208,13 @@ function setupPagination() {
     if (pageInfoContainer) {
         pageInfoContainer.innerHTML = `<div class="page-info-display">Showing ${startItem}-${endItem} of ${currentFilteredJobs.length} jobs</div>`;
     }
-    
+
     // Pagination buttons only
     let paginationHTML = '';
-    
+
     // Previous button
     paginationHTML += `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
-    
+
     // Page numbers
     for (let i = 1; i <= totalPages; i++) {
         if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
@@ -223,21 +223,21 @@ function setupPagination() {
             paginationHTML += '<span>...</span>';
         }
     }
-    
+
     // Next button
     paginationHTML += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
-    
+
     paginationContainer.innerHTML = paginationHTML;
 }
 
 function changePage(page) {
     const totalPages = Math.ceil(currentFilteredJobs.length / jobsPerPage);
     if (page < 1 || page > totalPages) return;
-    
+
     currentPage = page;
     displayJobsPage();
     setupPagination();
-    
+
     // Scroll to top of jobs container
     document.getElementById('jobsContainer').scrollIntoView({ behavior: 'smooth' });
 }
@@ -247,7 +247,7 @@ function searchJobs(query) {
         displayJobs(allJobs);
         return;
     }
-    
+
     const filteredJobs = allJobs.filter(job => {
         const searchText = query.toLowerCase();
         return (
@@ -260,7 +260,7 @@ function searchJobs(query) {
             (job.skills && job.skills.some(skill => skill.toLowerCase().includes(searchText)))
         );
     });
-    
+
     displayJobs(filteredJobs);
 }
 
@@ -270,9 +270,9 @@ function openJobDetails(jobId) {
 }
 
 // Load jobs when page loads
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     loadJobs();
-    
+
     // Check for search parameter in URL
     const urlParams = new URLSearchParams(window.location.search);
     const searchQuery = urlParams.get('search');

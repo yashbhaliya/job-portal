@@ -1170,6 +1170,32 @@
 .clear-filters-btn i {
     color: red;
 }
+
+/* ===== INLINE EXPERIENCE AND TYPE ===== */
+.experience-type-inline {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.experience-type-inline .experience,
+.experience-type-inline .employment-type {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+/* ===== INLINE SALARY AND EXPIRY ===== */
+.salary-expiry-inline {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.salary-expiry-inline .salary,
+.salary-expiry-inline .expiry-date {
+    margin-bottom: 0;
+    flex: 1;
+}
 /* ===== PAGINATION PAGE INFO ===== */
 .pagination .page-info {
     text-align: center;

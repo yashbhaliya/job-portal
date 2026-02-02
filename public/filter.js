@@ -295,6 +295,18 @@ function filterJobsByFilter(filter) {
 function displayJobs(jobs) {
     currentFilteredJobs = jobs;
     currentPage = 1;
+    
+    // Check if we're showing urgent jobs and apply layout class
+    const urlParams = new URLSearchParams(window.location.search);
+    const filter = urlParams.get('filter');
+    const container = document.getElementById('jobsContainer');
+    
+    if (filter === 'urgent') {
+        container.classList.add('urgent-layout');
+    } else {
+        container.classList.remove('urgent-layout');
+    }
+    
     displayJobsPage();
     setupPagination();
 }
@@ -348,10 +360,14 @@ function displayJobsPage() {
                 </div>
                 <div class="job-info">
                     <div class="category" onclick="openJobDetails('${job._id}')" style="cursor: pointer;"><strong>Category:</strong> ${job.category}</div>
-                    <div class="salary" onclick="openJobDetails('${job._id}')"><strong>Salary:</strong> ${salary}</div>
-                    <div class="experience" onclick="openJobDetails('${job._id}')"><strong>Experience:</strong> ${fullExperience}</div>
-                    <div class="employment-type" onclick="openJobDetails('${job._id}')"><strong>Type:</strong> ${employmentType}</div>
-                    <div class="expiry-date" onclick="openJobDetails('${job._id}')"><strong>Expires:</strong> ${job.expiryDate || 'Not specified'}</div>
+                    <div class="experience-type-inline">
+                        <div class="experience" onclick="openJobDetails('${job._id}')"><strong>Experience:</strong> ${fullExperience}</div>
+                        <div class="employment-type" onclick="openJobDetails('${job._id}')"><strong>Type:</strong> ${employmentType}</div>
+                    </div>
+                    <div class="salary-expiry-inline">
+                        <div class="salary" onclick="openJobDetails('${job._id}')"><img src="/img/save-money.png" alt="Salary" class="field-icon"> <strong>Salary:</strong> ${salary}</div>
+                        <div class="expiry-date" onclick="openJobDetails('${job._id}')"><img src="/img/calendar.png" alt="Expiry" class="field-icon"> <strong>Expires:</strong> ${job.expiryDate || 'Not specified'}</div>
+                    </div>
                     ${job.urgent ? '<span class="badge urgent" title="Urgent"><img src="/img/urgent.png" alt="Urgent" class="star-icon"></span>' : ''}
                     ${job.featured ? '<span class="badge featured" title="Featured"><img src="/img/features.png" alt="Featured" class="star-icon"></span>' : ''}
                 </div>
