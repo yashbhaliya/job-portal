@@ -177,9 +177,9 @@ function displayJobsPage() {
                 </div>
                 <div class="job-info">
                     <div class="category"><strong>Category:</strong> ${job.category}</div>
-                    <div class="experience"><i class="fa fa-briefcase"></i> <strong><img src="/img/save-money.png" alt="Urgent" class="star-icon"></strong> ${fullExperience}</div>
+                    <div class="experience"><strong>Experience:</strong> ${fullExperience}</div>
                     <div class="employment-type"><strong>Type:</strong> ${employmentType}</div>
-                    <div class="salary"><i class="fa fa-money-bill"></i> <strong>Salary:</strong> ${salary}</div>
+                    <div class="salary"> <strong>Salary:</strong> ${salary}</div>
                     <div class="expiry-date"><strong>Expires:</strong> ${job.expiryDate || 'Not specified'}</div>
                     ${job.urgent ? '<span class="badge urgent" title="Urgent"><img src="/img/urgent.png" alt="Urgent" class="star-icon"></span>' : ''}
                     ${job.featured ? '<span class="badge featured" title="Featured"><img src="/img/features.png" alt="Featured" class="star-icon"></span>' : ''}
