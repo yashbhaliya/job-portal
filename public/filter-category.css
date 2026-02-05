@@ -465,7 +465,7 @@
 /* ===== GRID ===== */
 .jobs-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 30px;
 }
 
@@ -737,6 +737,22 @@
     .filter-options {
         gap: 10px;
     }
+
+    /* Mobile line-by-line layout */
+    .experience-type-inline {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .salary-expiry-inline {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Hide icons in mobile view */
+    .field-icon {
+        display: none;
+    }
 }
 /* ===== PLACEHOLDER LAYOUT ===== */
 .no-jobs-layout {
@@ -901,4 +917,35 @@
 
 .clear-filters-btn i {
     color: red;
+}
+/* ===== INLINE EXPERIENCE AND TYPE ===== */
+.experience-type-inline {
+    display: flex;
+    /* gap: 20px; */
+    margin-bottom: 10px;
+}
+
+.experience-type-inline .experience,
+.experience-type-inline .employment-type {
+    margin-bottom: 0;
+}
+
+/* ===== INLINE SALARY AND EXPIRY ===== */
+.salary-expiry-inline {
+    display: flex;
+    /* gap: 20px; */
+    margin-bottom: 10px;
+}
+
+.salary-expiry-inline .salary,
+.salary-expiry-inline .expiry-date {
+    margin-bottom: 0;
+}
+
+/* ===== FIELD ICONS ===== */
+.field-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: middle;
 }

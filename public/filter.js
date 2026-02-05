@@ -365,8 +365,8 @@ function displayJobsPage() {
                         <div class="employment-type" onclick="openJobDetails('${job._id}')"><strong>Type:</strong> ${employmentType}</div>
                     </div>
                     <div class="salary-expiry-inline">
-                        <div class="salary" onclick="openJobDetails('${job._id}')"><img src="/img/save-money.png" alt="Salary" class="field-icon"> <strong>:</strong> ${salary}</div>
-                        <div class="expiry-date" onclick="openJobDetails('${job._id}')"><img src="/img/calendar.png" alt="Expiry" class="field-icon"> <strong>:</strong> ${job.expiryDate || 'Not specified'}</div>
+                        <div class="salary" onclick="openJobDetails('${job._id}')"><img src="/img/save-money.png" alt="Salary" class="field-icon"> <strong>Salary:</strong> ${salary}</div>
+                        <div class="expiry-date" onclick="openJobDetails('${job._id}')"><img src="/img/calendar.png" alt="Expiry" class="field-icon"> <strong>Expires:</strong> ${job.expiryDate || 'Not specified'}</div>
                     </div>
                     ${job.urgent ? '<span class="badge urgent" title="Urgent"><img src="/img/urgent.png" alt="Urgent" class="star-icon"></span>' : ''}
                     ${job.featured ? '<span class="badge featured" title="Featured"><img src="/img/features.png" alt="Featured" class="star-icon"></span>' : ''}

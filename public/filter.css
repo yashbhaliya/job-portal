@@ -735,6 +735,22 @@
     .filter-options {
         gap: 10px;
     }
+
+    /* Mobile line-by-line layout */
+    .experience-type-inline {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .salary-expiry-inline {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Hide icons in mobile view */
+    .field-icon {
+        display: none;
+    }
 }
 /* ===== PLACEHOLDER LAYOUT ===== */
 .no-jobs-layout {
@@ -798,6 +814,7 @@
     .no-jobs-layout {
         grid-template-columns: 1fr;
     }
+    
 }
 /* ===== NO JOBS CARD ===== */
 .no-jobs-card {
