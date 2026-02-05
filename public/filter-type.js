@@ -214,6 +214,18 @@ function filterJobsByType(type) {
 function displayJobs(jobs) {
     currentFilteredJobs = jobs;
     currentPage = 1;
+    
+    // Check if we're showing urgent or featured jobs and apply urgent layout class
+    const urlParams = new URLSearchParams(window.location.search);
+    const filter = urlParams.get('filter');
+    const container = document.getElementById('jobsContainer');
+    
+    if (filter === 'urgent' || filter === 'featured') {
+        container.classList.add('urgent-layout');
+    } else {
+        container.classList.remove('urgent-layout');
+    }
+    
     displayJobsPage();
     setupPagination();
 }

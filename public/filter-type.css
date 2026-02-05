@@ -469,6 +469,17 @@
     gap: 30px;
 }
 
+/* ===== URGENT LAYOUT ===== */
+.urgent-layout {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important;
+}
+
+.urgent-layout .job-card {
+    padding: 20px !important;
+    border-radius: 8px !important;
+}
+
 /* ===== CARD ===== */
 .job-card {
     position: relative;
