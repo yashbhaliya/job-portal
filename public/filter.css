@@ -465,7 +465,7 @@
 /* ===== GRID ===== */
 .jobs-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 30px;
 }
 
@@ -911,7 +911,6 @@
 .experience-type-inline .experience,
 .experience-type-inline .employment-type {
     margin-bottom: 0;
-    /* flex: 1; */
 }
 
 /* ===== INLINE SALARY AND EXPIRY ===== */
@@ -924,8 +923,8 @@
 .salary-expiry-inline .salary,
 .salary-expiry-inline .expiry-date {
     margin-bottom: 0;
-    /* flex: 1; */
 }
+
 /* ===== FIELD ICONS ===== */
 .field-icon {
     width: 16px;
