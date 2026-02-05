@@ -925,3 +925,10 @@
 .salary-expiry-inline .expiry-date {
     margin-bottom: 0;
 }
+/* ===== FIELD ICONS ===== */
+.field-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
